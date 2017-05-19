@@ -1,0 +1,52 @@
+  .radio2 .alta {
+        color: #2E9AFE;
+    }
+
+   .radio2 .alta:hover {
+        background: rgba(65, 65, 255, 0.1);
+    }
+
+   .radio2 .alta:before {
+        border: 3px solid #2E9AFE;
+    }
+
+    .radio2 input[type="radio"]:checked + .alta {
+        background: #2E9AFE;
+    }
+
+     .radio2 label {
+        display: inline-block;
+        cursor: pointer;
+        position: relative;
+        padding: 5px 15px 5px 51px;
+        font-size: 1em;
+        border-radius: 5px;
+        -webkit-transition: all 0.3s ease;
+        -o-transition: all 0.3s ease;
+        transition: all 0.3s ease;
+    }
+
+     .radio2 label:before {
+        content: "";
+        display: inline-block;
+        width: 17px;
+        height: 17px;
+        position: absolute;
+        left: 15px;
+        border-radius: 30%;
+        background: none;
+    }
+
+     .radio2 input[type="radio"] {
+        display: none;
+    }
+
+     .radio2 input[type="radio"]:checked + label:before {
+        display: none;
+    }
+
+     .radio2 input[type="radio"]:checked + label {
+        padding: 5px 15px;
+        border-radius: 2px;
+        color: #fff;
+    }

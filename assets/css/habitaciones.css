@@ -1,0 +1,206 @@
+  /*INICIO TABLA*/
+.iconocus { 
+        width: 30px !important;
+        height: auto;
+          }
+.iconocus2 { 
+         width: 25px !important;
+        height: auto;
+          }
+.iconocus3 { 
+         width: 35px !important;
+        height: auto;
+          }
+    .tag{
+         background-color: cornflowerblue;
+         color: white;
+         padding: 2px 8px;
+         }
+     .tag2{
+        background-color: chocolate;
+         color: white;
+         padding:2px 8px ;
+        }
+/*fin tabla*/
+
+textarea{
+        width: 95%;
+    }
+    label{
+        color: #333 !important;
+    }
+     
+    .alta {
+        color: #2E9AFE;
+    }
+    select{
+        height:40px; 
+        width:100%;
+    }
+
+     .radio .alta:hover {
+        background: rgba(65, 65, 255, 0.1);
+    }
+
+     .radio .alta:before {
+        border: 3px solid #2E9AFE;
+    }
+
+     .radio input[type="checkbox"]:checked + .alta {
+        background: #2E9AFE;
+    }
+
+     .radio label {
+        display: inline-block;
+        cursor: pointer;
+        position: relative;
+        padding: 5px 15px 5px 51px;
+        font-size: 1em;
+        border-radius: 5px;
+        -webkit-transition: all 0.3s ease;
+        -o-transition: all 0.3s ease;
+        transition: all 0.3s ease;
+    }
+
+     .radio label:before {
+        content: "";
+        display: inline-block;
+        width: 17px;
+        height: 17px;
+        position: absolute;
+        left: 15px;
+        border-radius: 30%;
+        background: none;
+    }
+
+     .radio input[type="checkbox"] {
+        display: none;
+    }
+
+     .radio input[type="checkbox"]:checked + label:before {
+        display: none;
+    }
+
+     .radio input[type="checkbox"]:checked + label {
+        padding: 5px 15px;
+        border-radius: 2px;
+        color: #fff;
+    }
+a{
+	outline: 0;
+	text-decoration: none;
+}
+.modal-bg{
+	left:0;right:0;
+	top:0;bottom:0;
+    position:absolute !important;
+	z-index:100;
+    margin-top: 0;
+	background-color:rgba(50,50,50,0.5);
+}
+
+.modal-bg form{
+	display:block;
+	margin: 20px auto;
+    width: 100%;
+}
+.modal-bg form *{
+	margin:0px;
+}
+.modal-bg input:focus{
+	border:2px solid #ab47bc;
+  outline:0;
+}
+ .modal-bg input{
+	padding:7px;
+	border:2px solid #ccc ;
+	border-radius:3px;
+}
+
+#forgot-link{
+	font-size: 14px;
+	line-height: 45px;
+	color: #5DC3A7;
+	display: inline-block;
+}
+#forgot-link:hover{
+	color: #23AA84;
+}
+#modal{ 
+	position:absolute;
+	background-color:#F5F5F6;
+	top:5%; 
+	z-index:101;
+	border-radius:3px;
+	width:98%;
+	margin:1%;
+	border-bottom: 3px solid #5DC3A7;
+	box-shadow:0 0 10px 0 rgba(0,0,0,0.3);
+}
+@media (min-width:490px){
+#modal{
+	top:2%; 
+	width:80%;
+	margin:10%;
+	}
+}
+
+#modal span{
+	display: block;
+	background:#ab47bc;
+	padding: 10px;
+	color:#fff;
+	border-radius:3px;
+}
+#modalcobro{ 
+	position:absolute;
+	background-color:#F5F5F6;
+	top:-20%; 
+	z-index:101;
+	border-radius:3px;
+	width:98%;
+    height: 500px;
+	margin:1%;
+	border-bottom: 3px solid #5DC3A7;
+	box-shadow:0 0 10px 0 rgba(0,0,0,0.3);
+}
+@media (min-width:490px){
+#modalcobro{
+	top:-10%; 
+	width:80%;
+	margin:10%;
+	}
+}
+
+#modalcobro span{
+	display: block;
+	background:#ab47bc;
+	padding: 10px;
+	color:#fff;
+	border-radius:3px;
+}
+#close{
+	float: right;
+	color: #fff;
+	font-family: serif;
+	font-size: 15px;
+}
+#close:hover{
+	color: #000;
+}
+.file{
+    background:#2E9AFE;
+    padding:10px 20px;
+    color:white  !important;
+    border-radius:5px;
+}
+.file:hover{
+    padding:9.5px 19px;
+    color:white  !important;
+    cursor: pointer;
+}
+#foto{
+    width: 115px;
+    height: 135px;
+    border: 1px solid #2E9AFE;
+}
