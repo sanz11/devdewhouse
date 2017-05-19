@@ -320,12 +320,12 @@
                                    <input type="text" name="floors" id="floors">
                              </div>
                         </div>
-                        <!--<div class="col-md-6">
+                        <div class="col-md-6">
                              <div class="form-group ">
                                    <label>Fecha de pago:</label><br>
                                    <input type="text" name="datepay" id="datepay">
                              </div>
-                         </div>-->
+                         </div>
 				     </div>
 				 <div class="row">
                   <div class="col-md-6">
