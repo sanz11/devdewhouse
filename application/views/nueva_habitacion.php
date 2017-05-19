@@ -320,12 +320,12 @@
                                    <input type="text" name="floors" id="floors">
                              </div>
                         </div>
-                        <!--<div class="col-md-6">
+                        <div class="col-md-6">
                              <div class="form-group ">
                                    <label>Fecha de pago:</label><br>
                                    <input type="text" name="datepay" id="datepay">
                              </div>
-                         </div>-->
+                         </div>
 				     </div>
 				 <div class="row">
                   <div class="col-md-6">
@@ -336,7 +336,7 @@
                             <label for="bath" class="alta">Baño</label>
                             
                             <input type="checkbox" name="laundry" id="laundry" value="1">
-                            <label for="laundry" class="alta">Lavadero</label>
+                            <label for="laundry" class="alta">Agua caliente</label>
                             
                             <input type="checkbox" name="cable" id="cable" value="1">
                             <label for="cable" class="alta" style="margin-top:5px;">Cable</label>
