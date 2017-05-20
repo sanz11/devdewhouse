@@ -268,7 +268,7 @@
                                                 <th>DNI</th>
                                                 <th>Nombre</th>
                                                 <th>Apellidos</th>
-                                                <th>Cuarto</th>
+                                                <!--<th>Cuarto</th>-->
                                                 <th>Opción</th>
                                             </thead>
 
@@ -280,7 +280,7 @@
                                                     <td><?php echo $value->person_Dni; ?></td>
                                                     <td><?php echo $value->person_Name; ?></td>
                                                     <td><?php echo $value->person_LastName." ".$value->person_LastName2; ?></td>
-                                                    <td><?php echo $value->room_Number; ?></td>
+                                                    <!--<td><?php echo $value->room_Number; ?></td>-->
                                                    <td>
                                                         <a href="javascript:;" onclick="delet(<?php echo $value->tnt_Code; ?>,<?php echo $value->room_Code; ?>);">
                                                         <img src="<?php echo base_url();?>assets/img/iconos/deleteuser.png" title="Eliminar" class="iconocus">
@@ -294,14 +294,11 @@
                                                     </td>
                                                 </tr>
 
-
                                         <?php  }} else{?>  
                                            <tr>
                                                <td colspan="6">Ningun dato encontrado para la búsqueda</td>
                                            </tr>
                                         <?php  }?>   
-
-
 
                                             </tbody>
                                         </table>
@@ -309,9 +306,5 @@
                                     </div>
                                 </div>
                             </div>
-
-
                         </div>
-	                
- 
-</script>      
+	                    

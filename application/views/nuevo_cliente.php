@@ -5,13 +5,14 @@
     $( "#nacimiento" ).datepicker();
   } );
     function save(){
-        id=$('#id').val();
+       dni=$('#dni').val();
         nombre=$('#nombre').val();
         apellidop=$('#apellidop').val();
         apellidom=$('#apellidom').val();
+        telefono=$('#telefono').val();
         
-       if(edad==''){
-           alert('complete el campo EDAD');
+       if(dni==''){
+           alert('complete el campo DNI');
            return false;
            $('#dni').focus();
        }
@@ -30,35 +31,42 @@
             return false;
            $('#apellidos').focus();
        }
-        
-        
-        if(id==''){
-          url='<?php echo base_url();?>tenants/add_tenants';
-            mensaje='Registrado correctamente.';
+        if(telefono==''){
+           alert('seleccione FECHA DE TELEFONO');
+            return false;
+           $('#telefono').focus();
        }
+           
+        var formData= new FormData($('#inquilino_form')[0]);
+       //data = $('#user_form').serialize();
+        if($('#id').val()==''){
+            url='<?php echo base_url();?>tenants/add_tenants';
+            mensaje="registrado correctamente.";
+        }
         else{
             url='<?php echo base_url();?>tenants/update_tenants';
-            mensaje='Actualizado correctamente.';
+            mensaje="Actualizado correctamente.";
         }
-        
-       data = $('#inquilino_form').serialize();
-        
         $.ajax({
             type: "POST",
             url: url,
-            data: data,
+            data: formData,
             dataType: 'json',
             async: false,
+            cache:false,
+            contentType:false,
+            processData:false,
             error: function (data) {
-                alert('No se puedo completar la operación, por favor comunicarse con el administrador.');
+                alert('No se puedo completar la operación.');
             },
             success: function (data) {
                alert(mensaje);
                  window.location.href = "<?php echo base_url()?>tenants";
                 }
         });
-       
+        
     }
+    
     
     function delet(code,roomcode){
          eliminar=confirm("¿Deseas eliminar este registro?");
@@ -188,13 +196,20 @@
 </script>
 
 
-<div class="modal-bg" id="modal" >
+<div class="modal-bg" id='modal'>
 <div id="moda" class="moda">
-	<span  id="titumoda">REGISTRO DE CLIENTES</span>
-    <form id="inquilino_form" method="post" action="">
-    <input type="hidden" id="id" name="id">
+	<span  id="titumodal">REGISTRO DE ADMINISTRADORES</span>
+   
+    <form id="inquilino_form" method="post" action="" enctype="multipart/form-data">
+        <input type="hidden" name="id" id="id">
+        <input type="hidden" name="idperson" id="idperson">
 	    <div class="row">
-	         
+	         <div class="col-md-3">
+				 <div class="form-group ">
+					<label>DNI</label>
+					<input type="text" name="dni" id="dni">
+				 </div>
+	         </div>
 	          <div class="col-md-3">
 				 <div class="form-group ">
 					<label>Nombre</label>
@@ -215,32 +230,27 @@
 	         </div>
 	    </div>
 	    <div class="row">
-         <div class="col-md-3">
+             <div class="col-md-3">
 				 <div class="form-group ">
 					<label>Telefono</label>
 					<input type="text" name="telefono" id="telefono">
 				 </div>
-	         </div>
-            <div class="col-md-3">
-				 <div class="form-group ">
-					<label>Edad</label>
-					<input type="number" name="edad" id="edad">
-				 </div>
-	       </div>
-	          <div class="col-md-6">
+            </div>
+	         <div class="col-md-3">
 				 <div class="radio2">
-                            <h4>Sexo</h4>
-                            <input type="radio" name="sexo" id="masculino" value="1" checked> 
+                            <h4>Genero</h4>
+                            <input type="radio" name="genero" id="masculino" value="1" checked> 
                             <label for="masculino" class="alta">Masculino</label>
                             
-                            <input type="radio" name="sexo" id="femenino" value="0">
+                            <input type="radio" name="genero" id="femenino" value="2">
                             <label for="femenino" class="alta">Fenenino</label><br><br>
                             
                   </div>
 	         </div>
 	    </div>
-	    
-		<center><a onclick="save();" class="btn btn-primary">Guardar</a>&nbsp;<a href="<?php echo base_url();?>tenants" id="btclose" class="btn btn-success btclose">Cancelar</a></center>
+		<center><a href="javascript:save();" class="btn btn-primary">Guardar</a>&nbsp;
+		<a href="<?php echo base_url();?>tenants" id="btclose" class="btn btn-success btclose">Cancelar</a></center>
 	</form>
 </div>
 </div>
+<script src="<?php echo base_url();?>assets/js/upload.js"></script>

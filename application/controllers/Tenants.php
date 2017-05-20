@@ -23,7 +23,7 @@ class Tenants extends CI_Controller{
         $roomscobros=$this->Room_model->get_cobros('0');
         $data['npay']=count($roomscobros);
         //FIN datos para el menu
-       $list=$this->cliente_model->get_list();
+        $list=$this->cliente_model->get_list();
         $data['list']=$list;
         
         $data['name']='';
@@ -109,34 +109,29 @@ class Tenants extends CI_Controller{
          $this->cargarvista('cliente_index',$data);
         }
     public function add_tenants(){
-       
+       $dni =$this->input->post('dni');
          $nombre=$this->input->post('nombre');
          $apellidop=$this->input->post('apellidop');
          $apellidom=$this->input->post('apellidom');
          $telefono=$this->input->post('telefono');
-         //$edad=$this->input->post('edad');
-         $sexo=$this->input->post('sexo');
+         //$photo=$this->input->post('photo');
+         $genero=$this->input->post('genero');
+        
         
         $filter = new stdClass();
         $filter->person_Name=$nombre;
         $filter->person_LastName=$apellidop;
         $filter->person_LastName2=$apellidom;
-        //$filter->person_Age=$edad;
-        $filter->person_sex=$sexo;
-        $filter->person_Dni='70241454';
+        //$filter->person_BirthDate='2017-04-19';
+        $filter->person_Dni=$dni;
+        $filter->person_sex=$genero;
         $filter->person_Cellphone=$telefono;
-        //$filter->person_Photo='';
         $filter->person_State=1;
         
-        $idperson=$this->cliente_model->add_person($filter);//agregamos en la tabla persona
-        //$idcuarto=$this->cliente_model->select_room($ncuarto);//obtenemos el id cuarto
-        //$this->cliente_model->ocupied_room($idcuarto[0]->room_Code);//modificamos a ocupado el cuarto
+        $idperson=$this->cliente_model->add_person($filter);
         
-        
-        
-       //$inquilino=$this->cliente_model->add_tenants($idperson,$idcuarto[0]->room_Code);
-        exit('{"result":"ok","codigo":"'.$idperson.'"}');
-        
+        $users=$this->cliente_model->add_tenants($idperson);
+        exit('{"result":"ok","codigo":"'.$users.'"}');
         
     }
     public function get_person_room(){

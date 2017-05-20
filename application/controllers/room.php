@@ -83,7 +83,7 @@ class Room extends CI_Controller{
         $data['floor']=$floor;
         $data['active']="room";
         $data['titulo']="Mantenimiento de Habitaciones";
-        //$this->load->view("layout/menu",$data);
+       $this->load->view("layout/menu",$data);
         $this->load->view("layout/header",$data);
         $this->load->view("habitacion_index",$data);
         $this->load->view("layout/footer");
@@ -106,8 +106,8 @@ class Room extends CI_Controller{
         $filter->room_Size=$this->input->post('size');
         $filter->room_Price=$this->input->post('price');
         $filter->room_Description=$this->input->post('description');
-        $filter->room_Floors=$this->input->post('floors');
-        //$filter->room_DatePay=$this->input->post('datepay');
+        //$filter->room_Floors=$this->input->post('floors');
+        $filter->room_DatePay=$this->input->post('datepay');
         $filter->room_Bath=$bath;
         $filter->room_Laundry=$laundry;
         $filter->room_Cable=$cable;
@@ -147,6 +147,9 @@ class Room extends CI_Controller{
         $filter->room_Laundry=$laundry;
         $filter->room_Cable=$cable;
         $filter->room_Internet=$internet;
+		$filter->room_Date= $datepay;
+        $filter->room_Occupied=0;
+        $filter->room_State=1;
         
         $result=$this->Room_model->edit_room($filter,$id);
         

@@ -40,35 +40,106 @@
 });
     
 });
-  $( function() {
+ /* $( function() {
     $( "#datepay" ).datepicker();
-  } );
+  } );*/
     function save(){
-         data = $('#room_form').serialize();
-        id= $('#id').val();
-        if(id==''){
+        numero=$('#number').val();
+        piso=$('#floor').val();
+        tamaño=$('#size').val();
+        precio=$('#price').val();
+        detalle=$('#description').val();
+        baño=$('#bath').val();
+		agua=$('#laundry').val();
+		cable=$('#cable').val();
+		internet=$('#internet').val();
+		
+        
+       if(numero==''){
+           alert('complete el campo NUMERO DE HABITACION');
+           return false;
+           $('#number').focus();
+       }
+        if(piso==''){
+           alert('complete el campo PPISO');
+            return false;
+           $('#floor').focus();
+       }
+        if(tamaño==''){
+           alert('complete el campo TAMAÑO');
+            return false;
+           $('#size').focus();
+       }
+        if(precio==''){
+           alert('complete el campo PRECIO');
+            return false;
+           $('#price').focus();
+       }
+        if(detalle==''){
+           alert('complete DETALLE de la habitacion');
+            return false;
+           $('#description').focus();
+       }
+        
+           
+        var formData= new FormData($('#room_form')[0]);
+       //data = $('#user_form').serialize();
+        if($('#id').val()==''){
             url='<?php echo base_url();?>room/add_room';
-            mensaje='Registrado correctamente.';
-        }else{
-            url='<?php echo base_url();?>room/edit_room';
-            mensaje='Actualizado correctamente';
+            mensaje="registrado correctamente.";
+        }
+        else{
+            url='<?php echo base_url();?>room/update_room';
+            mensaje="Actualizado correctamente.";
         }
         $.ajax({
             type: "POST",
             url: url,
-            data: data,
+            data: formData,
             dataType: 'json',
             async: false,
+            cache:false,
+            contentType:false,
+            processData:false,
             error: function (data) {
-                alert('No se puedo completar la operación, por favor comunicarse con el administrador.');
+                alert('No se puedo completar la operación.');
             },
             success: function (data) {
                alert(mensaje);
-                window.location.href = "<?php echo base_url()?>room";
+                 window.location.href = "<?php echo base_url()?>room";
                 }
         });
-       
+        
     }
+    
+    $(function(){
+    $('#photo').on("change",function(){
+   /*limpiamos vista previa*/ 
+      $('#vista-previa').html('');
+    $('#mensaje').html('');
+    var archivo =   document.getElementById('photo').files;
+    var navegador = window.URL || window.webkitURL;
+    /*recorrer archivos*/
+    for(x=0;x<archivo.length;x++){
+        /*  validar tamaño y tipo de archivo*/
+        
+        var sise = archivo[x].size;
+        var type = archivo[x].type;
+        var name = archivo[x].name;
+        
+        if(sise >10240*10240){
+             $('#mensaje').append('<p>el archivo es muy grande</p>');
+        }
+        else if(type != 'image/jpg' && type != 'image/jpeg' && type != 'image/png' ){
+             $('#mensaje').append('<p>el archivo'+name+' no es una imagen permitida  pruebe con un .jpg </p>');
+        } else{
+            var objeto=navegador.createObjectURL(archivo[x]);
+             $('#vista-previa').append(' <img src="'+objeto+'" id="foto">');
+       }
+    }
+});
+    
+});
     function delet(code){
          eliminar=confirm("¿Deseas eliminar este registro?");
         if (eliminar){
@@ -273,9 +344,6 @@
 </script>
                            
 
-                          
-                                            
-
 	
     <form id="room_form" method="post" action="">
     <input type="hidden" name="id" id="id">
@@ -288,7 +356,7 @@
 	         </div>
 	          <div class="col-md-3">
 				 <div class="form-group ">
-					<label>Planta</label>
+					<label>Piso</label>
 					<input type="text" name="floor" id="floor">
 				 </div>
 	         </div>
@@ -305,30 +373,22 @@
 				 </div>
 	         </div>
 	    </div>
-	    <div class="row">
+         <div class="row">
 	         <div class="col-md-6">
 				 <div class="form-group ">
 					<label>Detalle del cuarto</label>
                      <textarea  rows="8" name="description" id="description"></textarea>
 				 </div>
 	         </div>
-	          <div class="col-md-6">
-                     <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group ">
-                                   <label>Pisos</label><br>
-                                   <input type="text" name="floors" id="floors">
-                             </div>
-                        </div>
                         <!--<div class="col-md-6">
                              <div class="form-group ">
                                    <label>Fecha de pago:</label><br>
                                    <input type="text" name="datepay" id="datepay">
                              </div>
                          </div>-->
-				     </div>
-				 <div class="row">
-                  <div class="col-md-6">
+				     
+				 
+                  <div class="col-md-2">
 				 <div class="radio">
                             <h4>Servicios</h4>
 
@@ -336,7 +396,7 @@
                             <label for="bath" class="alta">Baño</label>
                             
                             <input type="checkbox" name="laundry" id="laundry" value="1">
-                            <label for="laundry" class="alta">Lavadero</label>
+                            <label for="laundry" class="alta">Agua</label>
                             
                             <input type="checkbox" name="cable" id="cable" value="1">
                             <label for="cable" class="alta" style="margin-top:5px;">Cable</label>
@@ -345,7 +405,7 @@
                             <label for="internet" class="alta">Internet</label><br>
                              </div>
                         </div>
-                  <div class="col-md-6">
+                  <div class="col-md-4">
                   <label>Imagen</label><br>
 					<input type="file" name="photo" id="photo" style="display:none">
 					<label class="file" for="photo">Elegir foto</label>
@@ -353,7 +413,6 @@
                   <div id="vista-previ"> </div>
                    </div>
                 </div>
-	         </div>
 	    </div>
-		<center><a href="javascript:save();" class="btn btn-primary">Guardar</a>&nbsp;<a href="<?php echo base_url();?>room" class="btn btn-success btclose">Cancelar</a></center>
+		<center><a href="" onclick="save();" class="btn btn-primary">Guardar</a>&nbsp;<a href="<?php echo base_url();?>room" class="btn btn-success btclose">Cancelar</a></center>
 	</form>
