@@ -431,5 +431,5 @@ $('.button').click(function(){
      
      
      
-</script>-->
+</script>
 <script src="<?php echo base_url();?>assets/js/upload.js"></script>

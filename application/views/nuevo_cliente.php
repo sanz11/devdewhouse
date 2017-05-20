@@ -67,7 +67,6 @@
         
     }
     
-    
     function delet(code,roomcode){
          eliminar=confirm("¿Deseas eliminar este registro?");
         if (eliminar){

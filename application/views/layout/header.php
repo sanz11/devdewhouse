@@ -48,15 +48,15 @@
 	                    </a>
 	                </li>
 	                
-          <li class="dropdown" style="margin-top:15px;">
-				<a href="<?php echo base_url(); ?>cobros" class="dropdown-toggle" data-toggle="dropdown">
+          <!--<li class="dropdown" style="margin-top:15px;">
+				 <a href="<?php echo base_url(); ?>cobros" class="dropdown-toggle" data-toggle="dropdown">
 				<i class="material-icons">attach_money</i>
 				    <span class="notification"><?php echo $npay; ?></span>
 				<p class="hidden-lg hidden-md">Proximos Cobros</p>
-				</a>
-<ul class="dropdown-menu">
-        <li><a href="<?php echo base_url(); ?>cobros">Tiene <?php echo $npay; ?> Cobros en este mes</a></li>
-</ul>
+				</a>-->
+<!--<ul class="dropdown-menu">
+         <li><a href="<?php echo base_url(); ?>cobros">Tiene <?php echo $npay; ?> Cobros en este mes</a></li>
+</ul>-->
         </li>
         
         <li style="margin-top:13px;">

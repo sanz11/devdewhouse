@@ -93,7 +93,7 @@ class Room extends CI_Controller{
          $laundry=$this->input->post('laundry');
          $cable=$this->input->post('cable');
          $internet=$this->input->post('internet');
-         $datepay=$this->input->post('datepay');
+         //$datepay=$this->input->post('datepay');
         
         if($bath==""){$bath="0";}
         if($laundry==""){$laundry="0";}
@@ -101,13 +101,14 @@ class Room extends CI_Controller{
         if($internet==""){$internet="0";}
         
         $filter = new stdClass();
+		$filter->room_Number=$this->input->post('number');
         $filter->room_Number=$this->input->post('number');
         $filter->room_Floor=$this->input->post('floor');
         $filter->room_Size=$this->input->post('size');
         $filter->room_Price=$this->input->post('price');
         $filter->room_Description=$this->input->post('description');
         //$filter->room_Floors=$this->input->post('floors');
-        $filter->room_DatePay=$this->input->post('datepay');
+        //$filter->room_DatePay=$this->input->post('datepay');
         $filter->room_Bath=$bath;
         $filter->room_Laundry=$laundry;
         $filter->room_Cable=$cable;

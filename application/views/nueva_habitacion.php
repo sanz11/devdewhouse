@@ -50,10 +50,9 @@
         precio=$('#price').val();
         detalle=$('#description').val();
         baño=$('#bath').val();
-		agua=$('#laundry').val();
+		 agua=$('#laundry').val();
 		cable=$('#cable').val();
 		internet=$('#internet').val();
-		
         
        if(numero==''){
            alert('complete el campo NUMERO DE HABITACION');
@@ -61,7 +60,7 @@
            $('#number').focus();
        }
         if(piso==''){
-           alert('complete el campo PPISO');
+           alert('complete el campo PISO');
             return false;
            $('#floor').focus();
        }
@@ -414,5 +413,5 @@
                    </div>
                 </div>
 	    </div>
-		<center><a href="" onclick="save();" class="btn btn-primary">Guardar</a>&nbsp;<a href="<?php echo base_url();?>room" class="btn btn-success btclose">Cancelar</a></center>
+		<center><a href="" onclick="save();" class="btn btn-primary" >Guardar</a>&nbsp;<a href="<?php echo base_url();?>room" class="btn btn-success btclose">Cancelar</a></center>
 	</form>

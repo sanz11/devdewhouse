@@ -82,23 +82,23 @@ class Tenants extends CI_Controller{
         $userlist=$this->Users_model->edit($usercode);//metodo llamar datos por codigo
         $data['user']=$userlist->person_Name.' '.$userlist->person_LastName;
         $data['imagen']=$userlist->person_Photo;
-        $roomscobros=$this->Room_model->get_cobros('0');
-        $data['npay']=count($roomscobros);
+        //$roomscobros=$this->Room_model->get_cobros('0');
+        //$data['npay']=count($roomscobros);
         //FIN datos para el menu
          $name=$this->input->post('name');
          $apellido=$this->input->post('apellido');
-          $cuarto=$this->input->post('cuarto');
-          $sexo=$this->input->post('sexo');
+         //$cuarto=$this->input->post('cuarto');
+         $sexo=$this->input->post('sexo');
          $dni=$this->input->post('dni');
-          $estado=$this->input->post('estado');
+         $estado=$this->input->post('estado');
          
-         $result=$this->cliente_model->search($name,$apellido,$cuarto,$sexo,$dni,$estado);
+         $result=$this->cliente_model->search($name,$apellido,$sexo,$dni,$estado);
          
          $data['list']=$result;
         
         $data['name']=$name;
         $data['apellido']=$apellido;
-        $data['cuarto']=$cuarto;
+        //$data['cuarto']=$cuarto;
         $data['sexo']=$sexo;
         $data['dni']=$dni;
         $data['estado']=form_dropdown('estado', array('1'=> 'Actuales','0'=> 'Pasados','2'=> 'Todos'), $estado,'id="estadob" class="form-control"');
@@ -106,7 +106,7 @@ class Tenants extends CI_Controller{
          
         $data['active']="tenants";
         $data['titulo']="Mantenimiento de Inquilinos";
-         $this->cargarvista('cliente_index',$data);
+        $this->cargarvista('cliente_index',$data);
         }
     public function add_tenants(){
        $dni =$this->input->post('dni');
@@ -175,12 +175,12 @@ class Tenants extends CI_Controller{
          $nombre=$this->input->post('nombre');
          $apellidop=$this->input->post('apellidop');
          $apellidom=$this->input->post('apellidom');
-         $correo=$this->input->post('correo');
+         //$correo=$this->input->post('correo');
          $telefono=$this->input->post('telefono');
-         $telefono2=$this->input->post('telefono2');
+         /*$telefono2=$this->input->post('telefono2');
          $direccion=$this->input->post('direccion');
          $ncuarto=$this->input->post('ncuarto');
-         $nacimiento=$this->input->post('nacimiento');
+         $nacimiento=$this->input->post('nacimiento');*/
          $genero=$this->input->post('genero');
         
         $filter = new stdClass();
@@ -191,22 +191,22 @@ class Tenants extends CI_Controller{
         $filter->person_Dni=$dni;
         $filter->person_sex=$genero;
         $filter->person_Cellphone=$telefono;
-        $filter->person_Cellphone2=$telefono2;
-        $filter->person_Email=$correo;
-        $filter->person_DirectionOc=$direccion;
+        /*$filter->person_Cellphone2=$telefono2;
+         $filter->person_Email=$correo;
+        $filter->person_DirectionOc=$direccion;*/
         
         $datatnt=$this->cliente_model->get_data_tenants($id);
         $idperson=$this->cliente_model->update_person($datatnt[0]->person_Code,$filter);//editamos en la tabla persona
         
-        $idcuarto=$this->cliente_model->select_room($ncuarto);//obtenemos el id cuarto del nuevo cuarto
-        $this->cliente_model->ocupied_room($idcuarto[0]->room_Code);//modificamos a ocupado el cuarto
+        //$idcuarto=$this->cliente_model->select_room($ncuarto);//obtenemos el id cuarto del nuevo cuarto
+        //$this->cliente_model->ocupied_room($idcuarto[0]->room_Code);//modificamos a ocupado el cuarto
         
-       $inquilino=$this->cliente_model->update_tenants($id,$idcuarto[0]->room_Code);//actualizamos datos de tnt
+       //$inquilino=$this->cliente_model->update_tenants($id,$idcuarto[0]->room_Code);//actualizamos datos de tnt
        
-         $result=$this->cliente_model->existe_tnt_room($datatnt[0]->room_Code);//preguntamos si hay personas en el cuato anterior
-         if(count($result)<1){//si no hay ponemos que el cuarto esta desocupado
+         /*$result=$this->cliente_model->existe_tnt_room($datatnt[0]->room_Code);//preguntamos si hay personas en el cuato anterior
+          if(count($result)<1){//si no hay ponemos que el cuarto esta desocupado
             $this->Room_model->desocupar_room($datatnt[0]->room_Code);
-         }
+         }*/
         
         
         exit('{"result":"ok","codigo":"'.$genero.'"}');

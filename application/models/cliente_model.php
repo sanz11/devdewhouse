@@ -16,19 +16,19 @@ class cliente_model extends CI_Model{
             return $data;
         }
     }
-    public function search($name,$apellido,$cuarto,$sexo,$dni,$estado){
-        $this->db->select('p.*,t.*,r.room_Number,r.room_Code');
+    public function search($name,$apellido,$sexo,$dni,$estado){
+        $this->db->select('p.*,t.*,');
         $this->db->from('caf_tenant t');
         $this->db->join('caf_person p','p.person_Code=t.person_Code');
-        $this->db->join('caf_room r','r.room_Code=t.room_Code');
+        //$this->db->join('caf_room r','r.room_Code=t.room_Code');
         
         if($name!='')
             $this->db->where('person_Name',$name);
         if($apellido!='')
             $this->db->where('person_LastName',$apellido);
             //$this->db->('person_LastName2',$apellido);
-        if($cuarto!='')
-             $this->db->where('room_Number',$cuarto);
+       /* if($cuarto!='')
+             $this->db->where('room_Number',$cuarto);*/
         if($sexo!=2)
             $this->db->where('person_sex',$sexo);
         if($dni!='')
@@ -123,10 +123,10 @@ class cliente_model extends CI_Model{
                 
         }
     public function edit($tntcode){
-        $this->db->select('p.*,t.*,r.room_Number,r.room_Code');
+        $this->db->select('p.*,t.*,');
         $this->db->from('caf_tenant t');
         $this->db->join('caf_person p','p.person_Code=t.person_Code');
-        $this->db->join('caf_room r','r.room_Code=t.room_Code');
+        //$this->db->join('caf_room r','r.room_Code=t.room_Code');
         
        $this->db->where('tnt_Code',$tntcode);
         $query=$this->db->get();
@@ -153,9 +153,9 @@ class cliente_model extends CI_Model{
             $this->db->update('caf_person',(array)$filter);
             return 1;
         }
-     public function update_tenants($code,$roomcode){
+     public function update_tenants($code){
             $this->db->where('tnt_Code',$code);
-            $this->db->update('caf_tenant',array('room_Code'=>$roomcode));
+            $this->db->update('caf_tenant');
             return 1;
         }
     public function get_pdf($name,$apellido,$cuarto,$sexo,$dni,$estado){

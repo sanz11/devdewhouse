@@ -106,11 +106,11 @@
                 $('#apellidop').val(data.person_LastName);
                 $('#apellidom').val(data.person_LastName2);
                 $('#telefono').val(data.person_Cellphone);
-                $('#telefono2').val(data.person_Cellphone2);
+               /* $('#telefono2').val(data.person_Cellphone2);
                 $('#direccion').val(data.person_DirectionOc);
                 $('#correo').val(data.person_Email);  
                 $('#ncuarto').val(data.room_Number); 
-                $('#nacimiento').val(data.person_BirthDate);
+                $('#nacimiento').val(data.person_BirthDate);*/
                
                 
                 if(data.person_sex =='1'){
@@ -186,7 +186,7 @@
  
     }
 </script>
-                         <div class="row">
+<div class="row">
                             <div class="col-md-12">
                                 <div class="card">
                                     <div class="card-header" data-background-color="purple">
@@ -210,12 +210,12 @@
                                                         <input type="text" class="form-control" name="apellido"  id="apellidob" value="<?php echo $apellido;?>">
                                                     </div>
                                                 </div>
-                                                <div class="col-md-3">
-                                                    <div class="form-group label-floating">
+                                               <!-- <div class="col-md-3">
+                                                     <div class="form-group label-floating">
                                                         <label class="control-label">N° Cuarto:</label>
                                                         <input type="text" class="form-control" name="cuarto"  id="cuartob" value="<?php echo $cuarto;?>">
                                                     </div>
-                                                </div>
+                                                </div>-->
                                                 <div class="col-md-3">
                                                     <div class="form-group label-floating">
                                                         <label class="control-label">Sexo:</label>
@@ -241,7 +241,7 @@
                                             </div>
 
                                   <a id="print" class="btn btn-primary pull-right" href="javascript:print();">IMPRIMIR</a>
-                                  <a href="<?php echo base_url();?>tenants/nuevo"id="newtenants"class="btn btn-primary pull-right button">NUEVA</a>
+                                  <a href="<?php echo base_url();?>tenants/nuevo"id="newtenants"class="btn btn-primary pull-right">NUEVA</a>
                                   <a href="<?php echo base_url();?>tenants" class="btn btn-primary pull-right">LIMPIAR</a>
                                   <button type="submit"class="btn btn-primary pull-right">BUSCAR</button>
 
@@ -254,7 +254,7 @@
                         </div>
 
                    <!--tabla-->
-                      <div class="row">
+<div class="row">
                             <div class="col-md-12">
                                 <div class="card">
                                     <div class="card-header" data-background-color="purple">
@@ -307,4 +307,92 @@
                                 </div>
                             </div>
                         </div>
-	                    
+<div class="modal-bg" id='modal-bg'>
+<div id="modal" class="modal">
+	<span  id="titumodal">REGISTRO DE ADMINISTRADORES</span>
+   
+    <form id="inquilino_form" method="post" action="" enctype="multipart/form-data">
+        <input type="hidden" name="id" id="id">
+        <input type="hidden" name="idperson" id="idperson">
+	    <div class="row">
+	         <div class="col-md-3">
+				 <div class="form-group ">
+					<label>DNI</label>
+					<input type="text" name="dni" id="dni">
+				 </div>
+	         </div>
+	          <div class="col-md-3">
+				 <div class="form-group ">
+					<label>Nombre</label>
+					<input type="text" name="nombre" id="nombre">
+				 </div>
+	         </div>
+	         <div class="col-md-3">
+				 <div class="form-group ">
+					<label>Apellido Paterno</label>
+					<input type="text" name="apellidop" id="apellidop">
+				 </div>
+	         </div>
+	         <div class="col-md-3">
+				 <div class="form-group ">
+					<label>Apellidos Materno</label>
+					<input type="text" name="apellidom" id="apellidom">
+				 </div>
+	         </div>
+	    </div>
+	    <div class="row">
+             <div class="col-md-3">
+				 <div class="form-group ">
+					<label>Telefono</label>
+					<input type="text" name="telefono" id="telefono">
+				 </div>
+            </div>
+	         <div class="col-md-3">
+				 <div class="radio2">
+                            <h4>Genero</h4>
+                            <input type="radio" name="genero" id="masculino" value="1" checked> 
+                            <label for="masculino" class="alta">Masculino</label>
+                            
+                            <input type="radio" name="genero" id="femenino" value="2">
+                            <label for="femenino" class="alta">Fenenino</label><br><br>
+                            
+                  </div>
+	         </div>
+	    </div>
+		<center><a href="javascript:save();" class="btn btn-primary">Guardar</a>&nbsp;
+		<a href="<?php echo base_url();?>tenants" id="btclose" class="btn btn-success btclose">Cancelar</a></center>
+	</form>
+</div>
+</div>
+
+<script>
+$(document).ready(function(){
+     $('#modal-bg').fadeOut();		
+	$('.modal').fadeOut();
+    
+$('.button').click(function(){
+    $("#bodys").scrollTop( 0 );
+    limpiar();
+     
+    $('#titumodal').html('');
+    $('#titumodal').append('REGISTRO DE ADMINISTRADOR');
+		  $('.modal').css('display','block');
+		  $('#modal-bg').fadeIn();
+         
+	});
+    $('.btclose').click(function(){
+			  $('#modal-bg').fadeOut();		
+			  $('.modal').fadeOut();
+              $('#modal-detalle').fadeOut();		
+			  $('.modal-d').fadeOut();
+		  return false;
+		});
+});
+     
+ //<button type="submit" class="btn btn-primary">Guardar</button>  <a href="javascript:save();" class="btn btn-primary">Guardar</a>
+     
+     
+     
+     
+</script>
+<script src="<?php echo base_url();?>assets/js/upload.js"></script>	                    
