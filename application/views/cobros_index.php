@@ -1,6 +1,150 @@
-    <link href="<?php echo base_url();?>assets/css/habitaciones.css" rel="stylesheet">
+            <link href="<?php echo base_url();?>assets/css/habitaciones.css" rel="stylesheet">
     
+   <style type="text/css">
+       #imgh { 
+           width:200px;
+           height:120px;
+           margin-left: -30px;
+           margin-top: 10px;
+       }
+   </style>
+ 
+   
 <script>
+     $(function(){
+    $('#photo').on("change",function(){
+   /*limpiamos vista previa*/ 
+      $('#vista-previ').html('');
+    $('#mensaje').html('');
+    var archivo =   document.getElementById('photo').files;
+    var navegador = window.URL || window.webkitURL;
+    /*recorrer archivos*/
+    for(x=0;x<archivo.length;x++){
+        /*  validar tamaño y tipo de archivo*/
+        
+        var sise = archivo[x].size;
+        var type = archivo[x].type;
+        var name = archivo[x].name;
+        
+        if(sise >10240*10240){
+             $('#mensaje').append('<p>el archivo es muy grande</p>');
+        }
+        else if(type != 'image/jpg' && type != 'image/jpeg' && type != 'image/png' ){
+             $('#mensaje').append('<p>el archivo'+name+' no es una imagen permitida  pruebe con un .jpg </p>');
+        } else{
+            var objeto=navegador.createObjectURL(archivo[x]);
+             $('#vista-previ').append(' <img src="'+objeto+'" id="imgh" >');
+       }
+    }
+});
+    
+});
+  $( function() {
+    $( "#datepay" ).datepicker();
+  } );
+    function save(){
+        
+        data = $('#room_form').serialize();
+        id= $('#id').val();
+        if(id==''){
+            url='<?php echo base_url();?>room/add_room';
+            mensaje='Registrado correctamente.';
+        }else{
+            url='<?php echo base_url();?>room/edit_room';
+            mensaje='Actualizado correctamente';
+        }
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: data,
+            dataType: 'json',
+            async: false,
+            error: function (data) {
+                alert('No se puedo completar la operación, por favor comunicarse con el administrador.');
+            },
+            success: function (data) {
+               alert(mensaje);
+                window.location.href = "<?php echo base_url()?>room";
+                }
+        });
+       
+    }
+    
+    function delet(code){
+         eliminar=confirm("¿Deseas eliminar este registro?");
+        if (eliminar){
+             var codeparam = {
+                "coderoom" : code
+                };
+             url='<?php echo base_url();?>room/delete_room';
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: codeparam,
+                dataType: 'json',
+                async: false,
+                error: function (data) {
+                    alert('No se puedo completar la operación, por favor comunicarse con el administrador.');
+                },
+                success: function (data) {
+                   alert('Eliminado correctamente.');
+                    window.location.href = "<?php echo base_url()?>room";
+                }
+            });
+        }
+    }
+    function editar(codes){
+            limpiar();
+             var codeparam = {
+                "coderoom" : codes
+                };
+             url='<?php echo base_url();?>room/listedit_room';
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: codeparam,
+                dataType: 'json',
+                async: false,
+                error: function (data) {
+                    alert('No se puedo completar la operación, por favor comunicarse con el administrador.');
+                },
+                success: function (data) {
+                //alert(data.room_Code);
+                $('#number').val(data.room_Number);
+                $('#floor').val(data.room_Floor);
+                $('#size').val(data.room_Size);
+                $('#price').val(data.room_Price);
+                $('#description').val(data.room_Description);
+                $('#floors').val(data.room_Floors);
+                if(data.room_Occupied==1){
+                    $('#datepay').val(data.room_DatePay);
+                }else{
+                     $('#datepay').val('');
+                }
+                if(data.room_Bath =='1'){
+                 $('#bath').prop('checked', true);   
+                }
+                if(data.room_Laundry =='1'){
+                 $('#laundry').prop('checked', true);   
+                }
+                if(data.room_Cable =='1'){
+                 $('#cable').prop('checked', true);   
+                }
+                if(data.room_Internet =='1'){
+                 $('#internet').prop('checked', true);   
+                }
+                
+                  $('#id').val(codes);
+                  $('#titumodal').html('');
+                  $('#titumodal').append('MODIFICAR DATOS DEL CUARTO: '+data.room_Number+'');
+                  $('.modal').css('display','block');
+		          $('#modal-bg').fadeIn();
+                  $( "#bodys").scrollTop( 0 );
+                }
+            });
+    
+        
+    }
     function verdetalle(codes){
             limpiardetalle();
              var codeparam = {
@@ -59,15 +203,14 @@
 
                 });
     }
-    function cobrar(code,precio){
-         var cobra = prompt("¿Deseas registrar el cobro del cuarto? \n S/.",precio);
-    
-        if (cobra != null && cobra != ''){
+    function desocupa(code){
+       
+         desocupar=confirm("¿Deseas desocupar el cuarto?");
+        if (desocupar){
              var codeparam = {
-                "coderoom" : code,
-                  "precio" : cobra
+                "coderoom" : code
                 };
-             url='<?php echo base_url();?>cobros/cobrar';
+             url='<?php echo base_url();?>room/desocupar_room';
             $.ajax({
                 type: "POST",
                 url: url,
@@ -78,88 +221,11 @@
                     alert('No se puedo completar la operación, por favor comunicarse con el administrador.');
                 },
                 success: function (data) {
-                   alert('cobro registrado.');
-                    window.location.href = "<?php echo base_url()?>cobros";
+                   alert('Cuarto Desocupado.');
+                    window.location.href = "<?php echo base_url()?>room";
                 }
             });
         }
-    }
-     function reporte(codes){
-        $('#precio').css('display','none');
-        $('#btguardar').css('display','none');
-        $('#emes').css('display','none');
-        $('#efecha').css('display','none');
-          
-            tabla();
-             url='<?php echo base_url();?>cobros/reportecobros';
-          $.post(url, {
-                        "codecobros" : codes
-                    }, function(data) {
-                        var suma=0;
-                        var c = JSON.parse(data);
-                        $.each(c,function(i,item){
-                            var meses = new Array ("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
-                            var array_fecha = item.cob_DatePay.split("-")  
-                            var mes = parseInt(array_fecha[1]);
-                            $('#'+mes).html('');
-                            $('#'+mes).append(' <th scope="row">'+mes+'</th><td>'+meses[mes-1]+'</td><td>'+item.cob_DatePay+'</td><td>S/.'+item.cob_Total+'</td><td><a href="javascript:;" onclick="editar('+item.cob_Code+','+item.cob_Total+','+mes+');"><img src="<?php echo base_url();?>assets/img/iconos/editar.png" title="Editar Datos" class="iconocus"></a></td>');
-                          suma= parseFloat(item.cob_Total)+parseFloat(suma);
-                          $('#total').html('');$('#total').append('TOTAL: S/.'+suma);
-                    });
-
-                });
-                  
-                  $('#titumodal').html('');
-                  $('#titumodal').append('DETALLE DE PAGOS');
-                  $('.modal').css('display','block');
-		          $('#modal-bg').fadeIn();
-                  $( "#bodys").scrollTop( 0 );
-        
-    }
-    function editar(code,valor,mes){
-        var meses = new Array ("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
-        $('#cobcode').val(code);
-        $('#precio').val(valor);
-        $('#precio').css('display','block');
-        $('#btguardar').css('display','');
-        $('#emes').html('');
-        $('#emes').append(meses[mes-1]);
-        $('#emes').css('display','');
-        $('#efecha').css('display','');
-    }
-    function update(){
-        code=$('#cobcode').val();
-        precio=$('#precio').val();
-        if(precio==''){
-            alert('Ingrese el precio');
-            return false;
-        }
-        modificar=confirm("¿Deseas Modificar el Cobro?");
-        if (modificar){
-             var codeparam = {
-                "codecob" : code,
-                "precio" : precio
-                };
-             url='<?php echo base_url();?>cobros/update';
-            $.ajax({
-                type: "POST",
-                url: url,
-                data: codeparam,
-                dataType: 'json',
-                async: false,
-                error: function (data) {
-                    alert('No se puedo completar la operación, por favor comunicarse con el administrador.');
-                },
-                success: function (data) {
-                   alert('Cobro modificado.');
-                    window.location.href = "<?php echo base_url()?>cobros";
-                }
-            });
-        }
-    }
-    function tabla(){
-        $('#tabladetalle').html('');
-        $('#tabladetalle').append('<tr id="1"><th scope="row">1</th><td>Enero</td><td></td><td></td><td></td></tr><tr id="2"><th scope="row">2</th><td>Febrero</td><td></td><td></td><td></td></tr><tr id="3"><th scope="row">3</th><td>Marzo</td><td></td><td></td><td></td></tr><tr id="4"><th scope="row">4</th><td>Abril</td><td></td><td></td><td></td></tr><tr id="5"><th scope="row">5</th><td>Mayo</td><td></td><td></td><td></td></tr><tr id="6"><th scope="row">6</th><td>Junio</td><td></td><td></td><td></td></tr><tr id="7"><th scope="row">7</th><td>Julio</td><td></td><td></td><td></td></tr><tr id="8"><th scope="row">8</th><td>Agosto</td><td></td><td></td><td></td></tr><tr id="9"><th scope="row">9</th><td>Septiembre</td><td></td><td></td><td></td></tr><tr id="10"><th scope="row">10</th><td>Octubre</td><td></td><td></td><td></td></tr><tr id="11"><th scope="row">11</th><td>Noviembre</td><td></td><td></td><td></td></tr><tr id="12"><th scope="row">12</th><td>Diciembre</td><td></td><td></td><td></td></tr>');
     }
     function print(){
    
@@ -176,11 +242,85 @@
     window.open(url, '', "width=800,height=600,menubars=no,resizable=no;");
  
     }
-   
-</script>
+    
+    function limpiar(){
+        $('#titumodal').val('');
+        $('#number').val('');
+        $('#floor').val('');
+        $('#datepay').val('');
+        $('#size').val('');
+        $('#price').val('');
+        $('#description').val('');
+        $('#floors').val('');
+        $('#bath').prop('checked', false);  
+        $('#laundry').prop('checked', false); 
+        $('#cable').prop('checked', false);
+        $('#internet').prop('checked', false);  
+    }
+    function limpiardetalle(){
+        $('#titumodal-d').html('');
+        $('#number-d').html('');
+        $('#floor-d').html('');
+        $('#size-d').html('');
+        $('#price-d').html('');
+        $('#description-d').html('');
+        $('#floors-d').html('');
+        $('#Baño-d').html('');  
+        $('#Lavadero-d').html(''); 
+        $('#Cable-d').html('');
+        $('#Internet-d').html('');
+        $('#tabladetalle').html('');
+    }
+</script>  
                     
+                                             <div class="row">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-header" data-background-color="purple">
+                                        <h4 class="title">Buscar Clientes</h4>
+                                        
+                                    </div>
+                                    <div class="card-content">
+                                        <form action="<?php echo base_url();?>room/search" method="post">
 
-                   <!--tabla-->
+
+                                            <div class="row">
+                                                
+                                                <div class="col-md-3">
+                                                    <div class="form-group label-floating">
+                                                        <label class="control-label">Precio:</label>
+                                                        <input type="text" class="form-control" name="precio"  id="precio">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group label-floating">
+                                                        <label class="control-label">N° Cuarto:</label>
+                                                        <input type="text" class="form-control" name="number" id="cuartob">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group label-floating">
+                                                    <label class="control-label">Piso:</label>
+                                                    <input type="text" class="form-control" name="floor" id="piso" >
+                                                    </div>
+                                                </div>
+											</div>
+                                            
+                                  <a id="print" class="btn btn-primary pull-right" href="javascript:print();">IMPRIMIR</a>
+                                  <a href="<?php echo base_url();?>room/nuevo"id="newtenants"class="btn btn-primary pull-right ">NUEVA</a>
+                                  <a href="<?php echo base_url();?>room" class="btn btn-primary pull-right">LIMPIAR</a>
+                                  <button type="submit"class="btn btn-primary pull-right">BUSCAR</button>
+
+                                            
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                           
+                        </div>
+                     
+                     
+                     <!--TABLA DE HABITACIONES -->
                       <div class="row">
                             <div class="col-md-12">
                                 <div class="card">
@@ -193,56 +333,48 @@
                                             <thead class="text-primary">
                                                 <th>Item</th>
                                                 <th>Número</th>
+                                                <th>Piso</th>
+                                                <th>Medida</th>
                                                 <th>Precio</th>
-                                                <th>Dia de Pago</th>
-                                                <th>Estado</th>
+                                                <th>Ocupado</th>
+                                                <th>Fecha de Pago</th>
                                                 <th>Opción</th>
                                             </thead>
 
                                             <tbody>
                                         <?php if(count($list)>0){ 
-                                                foreach($list as $indice => $value){ 
-                                                    
-                                                        $dia=date("d", strtotime($value[1]));
-                                                    
-                                                ?>
-                                                  <tr>
+                                                foreach($list as $indice => $value){?>
+                                                     <tr>
                                                     <td> <?php echo $indice+1; ?>  </td>
-                                                    <td><?php echo $value[0]; ?></td>
-                                                     <td>S/.<?php echo $value[2]; ?></td>
-                                                   <?php if($value[3]==0){?>
-                                                         <td></td>
+                                                    <td><?php echo $value->room_Number; ?></td>
+                                                    <td><?php echo $value->room_Floor; ?></td>
+                                                    <td><?php echo $value->room_Size; ?> m</td>
+                                                     <td>S/.<?php echo $value->room_Price; ?></td>
+                                                   <?php if($value->room_Occupied==0){?>
+                                                        <td><span class="tag">Disponible</span></td>
                                                          <td></td>
                                                      <?php }else{?>
-                                                          <td>
-                                                          <?php 
-                                                            if($value[1]=='0000-00-00'){echo '<span style="background:crimson;padding:4px; color:white">fecha no especificada </span>';}
-                                                            else{echo $dia;}
-                                                                 
-                                                          if($dia==date('d')&& $value[1]!='0000-00-00'){
-                                                                echo '<img src="'.base_url().'assets/img/iconos/hoy.svg" class="iconocus" title="HOY">hoy';
-                                                           }if($dia==date('d', strtotime('+1 day')) && $value[1]!='0000-00-00'){
-                                                                echo '<img src="'.base_url().'assets/img/iconos/manana.png" class="iconocus" title="Mañana">';
-                                                           }if($dia==date('d', strtotime('+2 day')) && $value[1]!='0000-00-00'){
-                                                                echo '<img src="'.base_url().'assets/img/iconos/pasmanana.png" class="iconocus" title="Pasado mañana">';
-                                                            }
-                                                            ?>
-                                                            
-                                                          </td>
-                                                        <td>
-                                                            <?php echo $value[5]; ?>
-                                                        </td>
+                                                         <td><span class="tag2">Ocupado</span></td>
+                                                          <td><?php echo $value->room_DatePay; ?></td>
                                                       <?php }?>
                                                    <td>
-                                                        <?php if($value[3]==1){?>
-                                                        <a href="javascript:;" onclick="cobrar(<?php echo $value[4]; ?>,<?php echo $value[2];?>);">
-                                                        <img src="<?php echo base_url();?>assets/img/iconos/cobrar.png" title="Cobrar" class="iconocus3"></a>
+                                                        <?php if($value->room_Occupied==0){?>
+                                                        <a href="javascript:;" onclick="delet(<?php echo $value->room_Code; ?>);">
+                                                        <img src="<?php echo base_url();?>assets/img/iconos/delete.png" title="Eliminar" class="iconocus">
                                                         <?php }?>
-                                                        
-                                                        
-                                                        <a href="javascript:;" onclick="reporte(<?php echo $value[4]; ?>);">
-                                                        <img src="<?php echo base_url();?>assets/img/iconos/reporte.png" title="Ver Detalle" class="iconocus3">
                                                         </a>
+                                                        <a href="javascript:;" onclick="editar(<?php echo $value->room_Code; ?>);">
+                                                        <img src="<?php echo base_url();?>assets/img/iconos/editar.png" title="Editar Datos" class="iconocus">
+                                                        </a>
+                                                        <a href="javascript:;" onclick="verdetalle(<?php echo $value->room_Code; ?>);">
+                                                        <img src="<?php echo base_url();?>assets/img/iconos/verdetalle.png" title="Ver Detalle" class="iconocus2">
+                                                        </a>
+                                                 <?php if($value->room_Occupied==1){?>
+                                                        
+                                                         <a href="javascript:;" onclick="desocupa(<?php echo $value->room_Code; ?>);">
+                                                        <img src="<?php echo base_url();?>assets/img/iconos/desocupar.png" title="DESOCUPAR" style="width:30px">
+                                                        </a>
+                                                    <?php }?>
                                                     </td>
                                                 </tr>
 
@@ -264,53 +396,125 @@
 
 
                         </div>
+	                
 
-    <div class="modal-bg" id="modal-bg" style="display:none">
-<div id="modalcobro" class="modal">
-	<span  id="titumodal">REGISTRO DE INQUILINOS</span>
-    <form id="inquilino_form" method="post" action="">
-         <div class="table-responsive" style="width:96% !important; margin:auto; height:300px;">          
-            <table class="table table-sm table-striped">
-              <thead>
-                <tr class="bg-primary">
-                 <th>#</th>
-                 <th>Numero</th>
-                 <th>Fecha de Pago</th>
-                 <th>Total</th>
-                 <th>Opcion</th>
-                </tr>
-              </thead>
-              <tbody id="tabladetalle">
-              </tbody>
-            </table>
-          </div>
-          <div class="table-responsive" style="width:96% !important; margin:auto;">          
-            <table class="table table-sm table-striped" style="width:98% !important; margin:auto; border:1px solid #545454 ">
-                <tr>
-                <th><input type="hidden" id="cobcode" value="">E</th>
-                <td><section id="emes"style="display:none"></section></td>
-                <td><section id="efecha"style="display:none"><?php echo date('Y-m-d');?></section></td>
-                <td><input type="text" id="precio" value="" style="display:none"></td>
-                <td id="total" scope="row" ></td></tr>
-            </table>
-          </div>
-	    
-		<center><a href="javascript:update();" class="btn btn-primary" id="btguardar" style="display:none">Guardar</a>&nbsp;<a id="btclose" class="btn btn-success btclose">Cancelar</a></center>
+ <!-- MODAL DETALLE-->
+ <div class="row">
+                            
+<div class="modal-bg" id='modal-bg' style="display:none">
+<div id="modal" class="modal">
+	<span id="titumodal">REGISTRO DE CUARTO</span>
+    <form id="room_form" method="post" action="">
+    <input type="hidden" name="id" id="id">
+	    <div class="row">
+	         <div class="col-md-3">
+				 <div class="form-group ">
+					<label>Número de Cuarto</label>
+					<input type="text" name="number" id="number">
+				 </div>
+	         </div>
+	          <div class="col-md-3">
+				 <div class="form-group ">
+					<label>Planta</label>
+					<input type="text" name="floor" id="floor">
+				 </div>
+	         </div>
+	          <div class="col-md-3">
+				 <div class="form-group ">
+					<label>Tamaño</label>
+					<input type="text" name="size" id="size">
+				 </div>
+	         </div>
+	          <div class="col-md-3">
+				 <div class="form-group ">
+					<label>Precio</label>
+					<input type="text" name="price" id="price">
+				 </div>
+	         </div>
+	    </div>
+	    <div class="row">
+	         <div class="col-md-6">
+				 <div class="form-group ">
+					<label>Detalle del cuarto</label>
+                     <textarea  rows="8" name="description" id="description"></textarea>
+				 </div>
+	         </div>
+	          <div class="col-md-6">
+                     <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group ">
+                                   <label>Pisos</label><br>
+                                   <input type="text" name="floors" id="floors">
+                             </div>
+                        </div>
+                        <div class="col-md-6">
+                             <div class="form-group ">
+                                   <label>Fecha de pago:</label><br>
+                                   <input type="text" name="datepay" id="datepay">
+                             </div>
+                         </div>
+				     </div>
+				 <div class="row">
+                  <div class="col-md-6">
+				 <div class="radio">
+                            <h4>Servicios</h4>
+
+                            <input type="checkbox" name="bath"  id="bath" value="1"> 
+                            <label for="bath" class="alta">Baño</label>
+                            
+                            <input type="checkbox" name="laundry" id="laundry" value="1">
+                            <label for="laundry" class="alta">Lavadero</label>
+                            
+                            <input type="checkbox" name="cable" id="cable" value="1">
+                            <label for="cable" class="alta" style="margin-top:5px;">Cable</label>
+                            
+                            <input type="checkbox" name="internet" id="internet" value="1">
+                            <label for="internet" class="alta">Internet</label><br>
+                             </div>
+                        </div>
+                  <div class="col-md-6">
+                  <label>Imagen</label><br>
+					<input type="file" name="photo" id="photo" style="display:none">
+					<label class="file" for="photo">Elegir foto</label>
+					<label id="mensaje"></label>
+                  <div id="vista-previ"> </div>
+                   </div>
+                </div>
+	         </div>
+	    </div>
+		<center><a href="javascript:save();" class="btn btn-primary">Guardar</a>&nbsp;<a  class="btn btn-success btclose">Cancelar</a></center>
 	</form>
 </div>
 </div>
-
+ 
 
 <script>
 $(document).ready(function(){
      $('#modal-bg').fadeOut();		
 	$('.modal').fadeOut();
     
-
+$('.button').click(function(){
+    $("#bodys").scrollTop( 0 );
+    limpiar();
+     
+    $('#titumodal').html('');
+    $('#titumodal').append('REGISTRO DE CUARTO');
+		  $('.modal').css('display','block');
+		  $('#modal-bg').fadeIn();
+         
+	});
     $('.btclose').click(function(){
 			  $('#modal-bg').fadeOut();		
 			  $('.modal').fadeOut();
+              $('#modal-detalle').fadeOut();		
+			  $('.modal-d').fadeOut();
 		  return false;
 		});
-});  
+});
+     
+ //<button type="submit" class="btn btn-primary">Guardar</button>  <a href="javascript:save();" class="btn btn-primary">Guardar</a>
+     
+     
+     
+     
 </script>      
