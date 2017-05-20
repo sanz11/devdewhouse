@@ -82,7 +82,9 @@
 			</div>
 
 	    	<div class="sidebar-wrapper" style='height:65vh;'>
-	            
+	            <ul class="nav navbar-nav navbar-right" style="text-align:center">
+                    <li ></li>
+                 </ul>
 	    	</div>
 	    </div>
 	    
