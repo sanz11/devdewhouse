@@ -82,6 +82,15 @@
 			</div>
 
 	    	<div class="sidebar-wrapper" style='height:65vh;'>
+                <div style="margin:20px auto; width:80%">
+                    Hotel: <strong>devdewhouse</strong><br><br>
+                    Dirección: <strong>Jirón Emilio Althaus 163, Distrito de Lima 15046</strong><br><br>
+                    Telefono: <strong> 999 999 999</strong><br><br>
+                    Fijo: <strong>756 266 23</strong><br><br>
+                    Hora de Atención: <strong>24h</strong><br><br>
+                   
+                    Dirección: <strong>Jirón Emilio Althaus 163, Distrito de Lima 15046</strong><br>
+                </div>
 	            <ul class="nav navbar-nav navbar-right" style="text-align:center">
                     <li ></li>
                  </ul>

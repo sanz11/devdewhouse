@@ -1,4 +1,10 @@
   <div class="main-panel" id="bodys">
+  <style>
+      .active{
+          background:  #333;
+          color: white;
+      }
+</style>
 			<nav class="navbar navbar-transparent navbar-absolute" style="background:#dfdfdf">
 				<div class="container-fluid">
 					<div class="navbar-header">
@@ -13,7 +19,7 @@
 					<div class="collapse navbar-collapse ">
 						<ul class="nav navbar-nav navbar-right" style="text-align:center">
         
-        <li class='active'>
+        <li <?php if($active=="dashboard"){ echo " class='active'";}?>>
  
 	                    <a href="<?php echo base_url()."dashboard";?>">
 	                        <i class="material-icons">dashboard</i>

@@ -21,7 +21,7 @@
        <img src="<?php echo base_url();?>assets/img/iconos/usu.png" class="img"> <input type="text" class="form-control" placeholder="Usuario " id="user" name="user">
        <i class="fa fa-user"></i>
      </div>
-     <div class="form-group log-status">
+     <div class="form-group ">
         <img src="<?php echo base_url();?>assets/img/iconos/contra.png" class="img" ><input type="password" class="form-control" placeholder="Contraseña" id="pass" name="pass">
        <i class="fa fa-lock"></i>
      </div>
