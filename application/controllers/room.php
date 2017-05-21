@@ -102,7 +102,6 @@ class Room extends CI_Controller{
         
         $filter = new stdClass();
 		$filter->room_Number=$this->input->post('number');
-        $filter->room_Number=$this->input->post('number');
         $filter->room_Floor=$this->input->post('floor');
         $filter->room_Size=$this->input->post('size');
         $filter->room_Price=$this->input->post('price');
@@ -113,7 +112,7 @@ class Room extends CI_Controller{
         $filter->room_Laundry=$laundry;
         $filter->room_Cable=$cable;
         $filter->room_Internet=$internet;
-        $filter->room_Date= $datepay;
+        //$filter->room_Date= $datepay;
         $filter->room_Occupied=0;
         $filter->room_State=1;
         

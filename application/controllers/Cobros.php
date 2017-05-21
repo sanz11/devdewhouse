@@ -11,6 +11,8 @@ if(!isset($this->session->userdata['home_user'])||$this->session->userdata['home
         }
     } 
     public function index(){
+       
+      
         //datos para el menu
         $usercode=$this->session->userdata['home_user'];
         $userlist=$this->Users_model->edit($usercode);//metodo llamar datos por codigo
@@ -20,6 +22,7 @@ if(!isset($this->session->userdata['home_user'])||$this->session->userdata['home
         $data['npay']=count($roomscobros);
         //FIN datos para el menu
        $list=$this->Room_model->get_list('','cobro');
+		$usercode=$this->session->userdata['home_user'];
         if(count($list)>0){
             foreach($list as $item => $value){
                 $numero=$value->room_Number;

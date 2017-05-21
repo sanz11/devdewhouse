@@ -5,7 +5,6 @@ class cliente_model extends CI_Model{
         $this->db->select('p.*,t.*,');
         $this->db->from('caf_tenant t');
         $this->db->join('caf_person p','p.person_Code=t.person_Code');
-         //$this->db->join('caf_room r','r.room_Code=t.room_Code');
         $this->db->where('tnt_State',1);
         $query=$this->db->get();
         

@@ -49,7 +49,7 @@
         tamaño=$('#size').val();
         precio=$('#price').val();
         detalle=$('#description').val();
-        baño=$('#bath').val();
+       baño=$('#bath').val();
 		 agua=$('#laundry').val();
 		cable=$('#cable').val();
 		internet=$('#internet').val();

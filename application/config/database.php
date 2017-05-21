@@ -81,7 +81,7 @@ $db['default'] = array(
 	'database' => 'vdedew_home',*/
 	'username' => 'root',
 	'password' => '',
-	'database' => 'homesoft',
+	'database' => 'tesischicas',
 	
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
