@@ -11,47 +11,63 @@
  
    
 <script>
-     $(function(){
-    $('#photo').on("change",function(){
-   /*limpiamos vista previa*/ 
-      $('#vista-previ').html('');
-    $('#mensaje').html('');
-    var archivo =   document.getElementById('photo').files;
-    var navegador = window.URL || window.webkitURL;
-    /*recorrer archivos*/
-    for(x=0;x<archivo.length;x++){
-        /*  validar tamaño y tipo de archivo*/
-        
-        var sise = archivo[x].size;
-        var type = archivo[x].type;
-        var name = archivo[x].name;
-        
-        if(sise >10240*10240){
-             $('#mensaje').append('<p>el archivo es muy grande</p>');
-        }
-        else if(type != 'image/jpg' && type != 'image/jpeg' && type != 'image/png' ){
-             $('#mensaje').append('<p>el archivo'+name+' no es una imagen permitida  pruebe con un .jpg </p>');
-        } else{
-            var objeto=navegador.createObjectURL(archivo[x]);
-             $('#vista-previ').append(' <img src="'+objeto+'" id="imgh" >');
-       }
-    }
-});
     
-});
   $( function() {
     $( "#datepay" ).datepicker();
   } );
-    function save(){
+     function save(){
+        numero=$('#numero').val();
+        piso=$('#piso').val();
+        tamanio=$('#tamanio').val();
+        precio=$('#precio').val();
+        detalle=$('#description').val();
+       	banio=$('#banio').val();
+        tcuarto=$('#tcuarto').val();
+		agua=$('#agua').val();
+		cable=$('#cable').val();
+		internet=$('#internet').val();
         
-        data = $('#room_form').serialize();
-        id= $('#id').val();
-        if(id==''){
-            url='<?php echo base_url();?>room/add_room';
-            mensaje='Registrado correctamente.';
-        }else{
-            url='<?php echo base_url();?>room/edit_room';
-            mensaje='Actualizado correctamente';
+       if(numero==''){
+           alert('complete el campo NUMERO DE HABITACION');
+           $('#numero').focus();
+           return false;
+       }
+      if(tcuarto=='0'){
+           alert('seleccione el TIPO DE HABITACION');
+           $('#tcuarto').focus();
+           return false;
+       }
+        if(piso==''){
+           alert('complete el campo PISO');
+           $('#piso').focus();
+            return false;
+       }
+        if(tamanio==''){
+           alert('complete el campo TAMAÑO');
+           $('#tamanio').focus();
+            return false;
+       }
+        if(precio==''){
+           alert('complete el campo PRECIO');
+           $('#precio').focus();
+            return false;
+       }
+        if(detalle==''){
+           alert('complete DETALLE de la habitacion');
+           $('#description').focus();
+            return false;
+       }
+        
+           
+        //var formData= new FormData($('#room_form')[0]);
+       data = $('#room_form').serialize();
+        if($('#id').val()==''){
+            url='<?php echo base_url();?>habitacion/add_habitacion';
+            mensaje="registrado correctamente.";
+        }
+        else{
+            url='<?php echo base_url();?>habitacion/edit_habitacion';
+            mensaje="Actualizado correctamente.";
         }
         $.ajax({
             type: "POST",
@@ -60,23 +76,23 @@
             dataType: 'json',
             async: false,
             error: function (data) {
-                alert('No se puedo completar la operación, por favor comunicarse con el administrador.');
+                alert('No se puedo completar la operación.');
             },
             success: function (data) {
                alert(mensaje);
-                window.location.href = "<?php echo base_url()?>room";
+                 window.location.href = "<?php echo base_url()?>habitacion";
                 }
         });
-       
+        
     }
-    
+
     function delet(code){
          eliminar=confirm("¿Deseas eliminar este registro?");
         if (eliminar){
              var codeparam = {
                 "coderoom" : code
                 };
-             url='<?php echo base_url();?>room/delete_room';
+             url='<?php echo base_url();?>habitacion/delete_habitacion';
             $.ajax({
                 type: "POST",
                 url: url,
@@ -88,7 +104,7 @@
                 },
                 success: function (data) {
                    alert('Eliminado correctamente.');
-                    window.location.href = "<?php echo base_url()?>room";
+                    window.location.href = "<?php echo base_url()?>habitacion";
                 }
             });
         }
@@ -98,7 +114,7 @@
              var codeparam = {
                 "coderoom" : codes
                 };
-             url='<?php echo base_url();?>room/listedit_room';
+             url='<?php echo base_url();?>habitacion/listedit_habitacion';
             $.ajax({
                 type: "POST",
                 url: url,
@@ -110,22 +126,18 @@
                 },
                 success: function (data) {
                 //alert(data.room_Code);
-                $('#number').val(data.room_Number);
-                $('#floor').val(data.room_Floor);
-                $('#size').val(data.room_Size);
-                $('#price').val(data.room_Price);
+                $('#numero').val(data.room_Number);
+                $('#piso').val(data.room_Floor);
+                $('#tamanio').val(data.room_Size);
+                $('#precio').val(data.room_Price);
                 $('#description').val(data.room_Description);
-                $('#floors').val(data.room_Floors);
-                if(data.room_Occupied==1){
-                    $('#datepay').val(data.room_DatePay);
-                }else{
-                     $('#datepay').val('');
-                }
+                $('#tcuarto').val(data.tcuarto_Codigo);
+                
                 if(data.room_Bath =='1'){
-                 $('#bath').prop('checked', true);   
+                 $('#banio').prop('checked', true);   
                 }
-                if(data.room_Laundry =='1'){
-                 $('#laundry').prop('checked', true);   
+                if(data.room_AguaCaliente =='1'){
+                 $('#agua').prop('checked', true);   
                 }
                 if(data.room_Cable =='1'){
                  $('#cable').prop('checked', true);   
@@ -150,7 +162,7 @@
              var codeparam = {
                 "coderoom" : codes
                 };
-             url='<?php echo base_url();?>room/listedit_room';
+             url='<?php echo base_url();?>habitacion/listedit_room';
             $.ajax({
                 type: "POST",
                 url: url,
@@ -203,42 +215,18 @@
 
                 });
     }
-    function desocupa(code){
-       
-         desocupar=confirm("¿Deseas desocupar el cuarto?");
-        if (desocupar){
-             var codeparam = {
-                "coderoom" : code
-                };
-             url='<?php echo base_url();?>room/desocupar_room';
-            $.ajax({
-                type: "POST",
-                url: url,
-                data: codeparam,
-                dataType: 'json',
-                async: false,
-                error: function (data) {
-                    alert('No se puedo completar la operación, por favor comunicarse con el administrador.');
-                },
-                success: function (data) {
-                   alert('Cuarto Desocupado.');
-                    window.location.href = "<?php echo base_url()?>room";
-                }
-            });
-        }
-    }
     function print(){
    
    
-    var numberb = $("#numberb").val();
-    var floorb = $("#floorb").val();
-    var stateb = $("#stateb").val();
+    var numberb = $("#numerob").val();
+    var floorb = $("#pisob").val();
+    var stateb = $("#estado").val();
     
     if(numberb=="")  {numberb="-";}
     if(floorb=="")  {floorb="-";}
         
 
-    url = "<?php echo base_url();?>room/print_pdf/"+numberb+"/"+floorb+"/"+stateb;
+    url = "<?php echo base_url();?>habitacion/print_pdf/"+numberb+"/"+floorb+"/"+stateb;
     window.open(url, '', "width=800,height=600,menubars=no,resizable=no;");
  
     }
@@ -281,34 +269,34 @@
                                         
                                     </div>
                                     <div class="card-content">
-                                        <form action="<?php echo base_url();?>room/search" method="post">
+                                        <form action="<?php echo base_url();?>habitacion/search" method="post">
 
 
                                             <div class="row">
                                                 
                                                 <div class="col-md-3">
                                                     <div class="form-group label-floating">
-                                                        <label class="control-label">Precio:</label>
-                                                        <input type="text" class="form-control" name="precio"  id="precio" value="<?php echo $precio;?>">
+                                                        <label class="control-label">Estado:</label>
+                                                       <?php echo $estado;?>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3">
                                                     <div class="form-group label-floating">
                                                         <label class="control-label">N° Cuarto:</label>
-                                                        <input type="text" class="form-control" name="number" id="cuartob" value="<?php echo $number;?>">
+                                                        <input type="text" class="form-control" name="numerob" id="numerob" value="<?php echo $number;?>">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3">
                                                     <div class="form-group label-floating">
                                                     <label class="control-label">Piso:</label>
-                                                    <input type="text" class="form-control" name="floor" id="piso" value="<?php echo $floor;?>">
+                                                    <input type="text" class="form-control" name="pisob" id="pisob" value="<?php echo $floor;?>">
                                                     </div>
                                                 </div>
 											</div>
                                             
                                   <a id="print" class="btn btn-primary pull-right" href="javascript:print();">IMPRIMIR</a>
-                                  <a href="<?php echo base_url();?>room/nuevo"id="newtenants"class="btn btn-primary pull-right ">NUEVA</a>
-                                  <a href="<?php echo base_url();?>room" class="btn btn-primary pull-right">LIMPIAR</a>
+                                  <a href="<?php echo base_url();?>habitacion/nuevo"id="newtenants"class="btn btn-primary pull-right ">NUEVA</a>
+                                  <a href="<?php echo base_url();?>habitacion" class="btn btn-primary pull-right">LIMPIAR</a>
                                   <button type="submit"class="btn btn-primary pull-right">BUSCAR</button>
 
                                             
@@ -337,7 +325,6 @@
                                                 <th>Medida</th>
                                                 <th>Precio</th>
                                                 <th>Ocupado</th>
-                                                <th>Fecha de Pago</th>
                                                 <th>Opción</th>
                                             </thead>
 
@@ -352,10 +339,8 @@
                                                      <td>S/.<?php echo $value->room_Price; ?></td>
                                                    <?php if($value->room_Occupied==0){?>
                                                         <td><span class="tag">Disponible</span></td>
-                                                         <td></td>
                                                      <?php }else{?>
                                                          <td><span class="tag2">Ocupado</span></td>
-                                                          <td><?php echo $value->room_DatePay; ?></td>
                                                       <?php }?>
                                                    <td>
                                                         <?php if($value->room_Occupied==0){?>
@@ -366,15 +351,9 @@
                                                         <a href="javascript:;" onclick="editar(<?php echo $value->room_Code; ?>);">
                                                         <img src="<?php echo base_url();?>assets/img/iconos/editar.png" title="Editar Datos" class="iconocus">
                                                         </a>
-                                                        <a href="javascript:;" onclick="verdetalle(<?php echo $value->room_Code; ?>);">
+                                                      <!--  <a href="javascript:;" onclick="verdetalle(<?php echo $value->room_Code; ?>);">
                                                         <img src="<?php echo base_url();?>assets/img/iconos/verdetalle.png" title="Ver Detalle" class="iconocus2">
-                                                        </a>
-                                                 <?php if($value->room_Occupied==1){?>
-                                                        
-                                                         <a href="javascript:;" onclick="desocupa(<?php echo $value->room_Code; ?>);">
-                                                        <img src="<?php echo base_url();?>assets/img/iconos/desocupar.png" title="DESOCUPAR" style="width:30px">
-                                                        </a>
-                                                    <?php }?>
+                                                        </a>-->
                                                     </td>
                                                 </tr>
 
@@ -403,85 +382,72 @@
                             
 <div class="modal-bg" id='modal-bg' style="display:none">
 <div id="modal" class="modal">
-	<span id="titumodal">REGISTRO DE CUARTO</span>
-    <form id="room_form" method="post" action="">
-    <input type="hidden" name="id" id="id">
-	    <div class="row">
-	         <div class="col-md-3">
-				 <div class="form-group ">
-					<label>Número de Cuarto</label>
-					<input type="text" name="number" id="number">
-				 </div>
-	         </div>
-	          <div class="col-md-3">
-				 <div class="form-group ">
-					<label>Planta</label>
-					<input type="text" name="floor" id="floor">
-				 </div>
-	         </div>
-	          <div class="col-md-3">
-				 <div class="form-group ">
-					<label>Tamaño</label>
-					<input type="text" name="size" id="size">
-				 </div>
-	         </div>
-	          <div class="col-md-3">
-				 <div class="form-group ">
-					<label>Precio</label>
-					<input type="text" name="price" id="price">
-				 </div>
-	         </div>
-	    </div>
-	    <div class="row">
+	<span id="titumodal">EDITAR HABITACION</span>
+      <form id="room_form" method="post" action="">
+                    <input type="hidden" name="id" id="id"> 
+                     <div class="row">     
+                         <div class="col-md-3">
+				             <div class="form-group ">
+					            <label>N° Cuarto</label>
+					            <input type="text" name="numero" id="numero">
+				             </div>
+	                     </div>
+	                      <div class="col-md-3">
+			            	 <div class="form-group ">
+			            		<label>Piso</label>
+			            		<input type="text" name="piso" id="piso">
+			            	 </div>
+	                     </div>
+	                      <div class="col-md-3">
+			            	 <div class="form-group ">
+			            		<label>Tamaño</label>
+			            		<input type="text" name="tamanio" id="tamanio">
+			            	 </div>
+	                     </div>
+	                      <div class="col-md-3">
+			            	 <div class="form-group ">
+			            		<label>Precio</label>
+			            		<input type="text" name="precio" id="precio">
+			            	 </div>
+	                     </div>
+	                </div>
+         <div class="row">
 	         <div class="col-md-6">
 				 <div class="form-group ">
 					<label>Detalle del cuarto</label>
-                     <textarea  rows="8" name="description" id="description"></textarea>
+                     <textarea  rows="7" name="description" id="description"></textarea>
 				 </div>
 	         </div>
-	          <div class="col-md-6">
-                     <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group ">
-                                   <label>Pisos</label><br>
-                                   <input type="text" name="floors" id="floors">
-                             </div>
-                        </div>
-                        <div class="col-md-6">
-                             <div class="form-group ">
-                                   <label>Fecha de pago:</label><br>
-                                   <input type="text" name="datepay" id="datepay">
-                             </div>
-                         </div>
+            <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-4">
+				     <div class="form-group ">
+					    <label>Tipo de Cuarto</label>
+					        <?php echo $tcuarto; ?>
 				     </div>
-				 <div class="row">
-                  <div class="col-md-6">
-				 <div class="radio">
-                            <h4>Servicios</h4>
+	            </div>
+            </div>
+            <div class="row">
+                <div class="radio">
+                  <h4>Servicios</h4>
 
-                            <input type="checkbox" name="bath"  id="bath" value="1"> 
-                            <label for="bath" class="alta">Baño</label>
+                  <input type="checkbox" name="banio"  id="banio" value="1"> 
+                  <label for="banio" class="alta">Baño Privado</label>
                             
-                            <input type="checkbox" name="laundry" id="laundry" value="1">
-                            <label for="laundry" class="alta">Lavadero</label>
+                  <input type="checkbox" name="agua" id="agua" value="1">
+                  <label for="agua" class="alta">Agua Caliente</label>
                             
-                            <input type="checkbox" name="cable" id="cable" value="1">
-                            <label for="cable" class="alta" style="margin-top:5px;">Cable</label>
+                  <input type="checkbox" name="cable" id="cable" value="1">
+                  <label for="cable" class="alta" style="margin-top:5px;">Cable</label>
                             
-                            <input type="checkbox" name="internet" id="internet" value="1">
-                            <label for="internet" class="alta">Internet</label><br>
-                             </div>
-                        </div>
-                  <div class="col-md-6">
-                  <label>Imagen</label><br>
-					<input type="file" name="photo" id="photo" style="display:none">
-					<label class="file" for="photo">Elegir foto</label>
-					<label id="mensaje"></label>
-                  <div id="vista-previ"> </div>
-                   </div>
+                  <input type="checkbox" name="internet" id="internet" value="1">
+                  <label for="internet" class="alta">Internet</label><br>
                 </div>
-	         </div>
-	    </div>
+            </div>
+           
+             </div>
+           
+        </div>
 		<center><a href="javascript:save();" class="btn btn-primary">Guardar</a>&nbsp;<a  class="btn btn-success btclose">Cancelar</a></center>
 	</form>
 </div>

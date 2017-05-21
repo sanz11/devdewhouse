@@ -9,7 +9,7 @@
 							</li>
 							<li>
 								<a href="#">
-									Marlith Huillca
+									Ruth Borda
 								</a>
 							</li>
 							<li>
@@ -19,14 +19,23 @@
 							</li>
 							<li>
 								<a href="#">
-								   Abel Ricra
+									Yeny Zevallos
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									/
+								</a>
+							</li>
+							<li>
+								<a href="#">
+								   ---
 								</a>
 							</li>
 						</ul>
 					</nav>
 					<p class="copyright pull-right">
-						&copy; <script>document.write(new Date().getFullYear())</script> <a href="http://www.devdew.com" target="_blank">DevdeW</a>, Sistema HOMEDev responsive design
-					</p>
+						&copy; <script>document.write(new Date().getFullYear())</script> <a >TESIS</a>, Sistema HOTELERO</p>
 				</div>
 			</footer>
 		</div>

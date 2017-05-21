@@ -1,5 +1,5 @@
 <?php
-class Room_model extends CI_Model{
+class Habitacion_model extends CI_Model{
     
     public function get_list($free='',$cobro=''){
         $this->db->select('*');
@@ -19,15 +19,15 @@ class Room_model extends CI_Model{
             return $data;
         }
     }
-    public function search($number,$floor,$precio){
+    public function search($number,$floor,$estado){
         $this->db->select('*');
         $this->db->from('caf_room');
         if($number!='')
             $this->db->where('room_Number',$number);
         if($floor!='')
             $this->db->where('room_Floor',$floor);
-		if($precio!='')
-            $this->db->where('room_Price',$precio);
+		if($estado!='2')
+            $this->db->where('room_Occupied',$estado);
        
         $query=$this->db->get();
         
@@ -39,16 +39,16 @@ class Room_model extends CI_Model{
         } 
         
     }
-    public function add_room($filter){
+    public function add_habitacion($filter){
         $this->db->insert('caf_room',(array)$filter);
         return $this->db->insert_id();
     }
-    public function edit_room($filter,$id){
+    public function edit_habitacion($filter,$id){
         $this->db->where('room_Code',$id);
         $this->db->update('caf_room',(array)$filter);
         return 1;
     }
-    public function delete_room($code){
+    public function delete_habitacion($code){
         $this->db->where('room_Code',$code);
         $this->db->update('caf_room',array('room_State'=>0));
         return 1;
@@ -114,6 +114,22 @@ class Room_model extends CI_Model{
             return $data;
         }  
     }
+    public function listar_tipocuarto(){
+      $this->db->select('*');
+      $this->db->from('caf_tcuarto');
+     // $this->db->where('room_State',1);
+     // $this->db->order_by('room_Number','asc');
+            
+        $query=$this->db->get();
+        
+        if($query->num_rows()>0){
+            foreach($query->result() as $value){
+                $data[]=$value;
+            }
+            return $data;
+        }  
+    }
+    
     
 }
 ?>

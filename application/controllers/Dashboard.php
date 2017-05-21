@@ -4,7 +4,7 @@ class Dashboard extends CI_Controller{
     function __construct(){
         parent::__construct();
          $this->load->model('cliente_model');
-        $this->load->model('Room_model');
+        $this->load->model('Habitacion_model');
         $this->load->model('Users_model');
         if(!isset($this->session->userdata['home_user'])||$this->session->userdata['home_user']==null){
         redirect(base_url());
@@ -21,9 +21,9 @@ class Dashboard extends CI_Controller{
         //FIN datos para el menu
         
         $tenants=$this->cliente_model->get_list();
-        $rooms=$this->Room_model->listar_ncuarto();
+        $rooms=$this->Habitacion_model->listar_ncuarto();
         $data['list']=$rooms;
-        $roomsfree=$this->Room_model->get_list('0');
+        $roomsfree=$this->Habitacion_model->get_list('0');
         
         $data['ntenants']=count($tenants);
         $data['nroom']=count($rooms);

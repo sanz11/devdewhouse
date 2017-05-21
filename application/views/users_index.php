@@ -197,7 +197,7 @@
                          <div class="row">
                             <div class="col-md-8">
                                 <div class="card">
-                                    <div class="card-header" data-background-color="purple">
+                                    <div class="card-header" data-background-color="orange">
                                         <h4 class="title">Buscar Administrador</h4>
                                         <!--<p class="category"></p>-->
                                     </div>
@@ -221,9 +221,9 @@
                                             </div>
 
                                  <!-- <a id="print" class="btn btn-primary pull-right">IMPRIMIR</a>-->
-                                  <a href="<?php echo base_url();?>users/nuevo"id="newusers"class="btn btn-primary pull-right ">NUEVA</a>
-                                  <a href="<?php echo base_url();?>users" class="btn btn-primary pull-right">LIMPIAR</a>
-                                  <button type="submit"class="btn btn-primary pull-right">BUSCAR</button>
+                                  <a href="<?php echo base_url();?>users/nuevo"id="newusers"class="btn btn-warning pull-right ">NUEVA</a>
+                                  <a href="<?php echo base_url();?>users" class="btn btn-warning pull-right">LIMPIAR</a>
+                                  <button type="submit"class="btn btn-warning pull-right">BUSCAR</button>
 
                                             <div class="clearfix"></div>
                                         </form>
@@ -248,7 +248,7 @@
                       <div class="row">
                             <div class="col-md-12">
                                 <div class="card">
-                                    <div class="card-header" data-background-color="purple">
+                                    <div class="card-header" data-background-color="orange">
                                         <h4 class="title">LISTA DE USUARIOS</h4>
                                         <p class="category"> <?php echo count($list);?> Usuarios encontrados</p>
                                     </div>

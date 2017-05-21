@@ -34,20 +34,20 @@
 	     </li>
 	      
          <li <?php if($active=="habitacion"){ echo " class='active'";}?>>
-	                    <a href="<?php echo base_url()."room";?>">
+	                    <a href="<?php echo base_url()."Habitacion";?>">
 	                        <i class="material-icons">home</i>
 	                        <p>Habitación</p>
 	                    </a>
 	                </li>
          
           <li <?php if($active=="cliente"){ echo " class='active'";}?>>
-	                    <a href="<?php echo base_url()."tenants";?>">
+	                    <a href="<?php echo base_url()."cliente";?>">
 	                        <i class="material-icons">group</i>
 	                        <p>Cliente</p>
 	                    </a>
 	                </li>
 	                
-          <li <?php if($active=="personal"){ echo " class='active'";}?>>
+          <li <?php if($active=="users"){ echo " class='active'";}?>>
 	                    <a href="<?php echo base_url()."users";?>">
 	                        <i class="material-icons">person</i>
 	                        <p>Usuario</p>

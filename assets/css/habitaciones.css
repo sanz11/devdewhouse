@@ -22,7 +22,12 @@
          padding:2px 8px ;
         }
 /*fin tabla*/
-
+input:focus,textarea:focus ,select:focus{ 
+    border: 1px solid cornflowerblue;
+}
+input:focus { 
+    height:30px; 
+}
 textarea{
         width: 95%;
     }
@@ -34,7 +39,7 @@ textarea{
         color: #2E9AFE;
     }
     select{
-        height:40px; 
+        height:30px; 
         width:100%;
     }
 

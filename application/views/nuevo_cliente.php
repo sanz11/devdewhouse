@@ -10,139 +10,67 @@
         apellidop=$('#apellidop').val();
         apellidom=$('#apellidom').val();
         telefono=$('#telefono').val();
+        edad=$('#edad').val();
         
        if(dni==''){
            alert('complete el campo DNI');
-           return false;
            $('#dni').focus();
+           return false;
        }
         if(nombre==''){
            alert('complete el campo NOMBRE');
-            return false;
            $('#nombre').focus();
+           return false;
        }
         if(apellidop==''){
            alert('complete el campo APELLIDO PATERNO');
-            return false;
            $('#apellidos').focus();
+           return false;
        }
         if(apellidom==''){
            alert('complete el campo APELLIDO MATERNO');
-            return false;
            $('#apellidos').focus();
+           return false;
        }
         if(telefono==''){
            alert('seleccione FECHA DE TELEFONO');
-            return false;
            $('#telefono').focus();
+           return false;
+       }
+         if(edad==''){
+           alert('ingrese la edad');
+           $('#edad').focus();
+           return false;
        }
            
-        var formData= new FormData($('#inquilino_form')[0]);
-       //data = $('#user_form').serialize();
+       data = $('#user_form').serialize();
         if($('#id').val()==''){
-            url='<?php echo base_url();?>tenants/add_tenants';
+            url='<?php echo base_url();?>cliente/add_cliente';
             mensaje="registrado correctamente.";
         }
         else{
-            url='<?php echo base_url();?>tenants/update_tenants';
+            url='<?php echo base_url();?>cliente/update_cliente';
             mensaje="Actualizado correctamente.";
         }
+        //alert(url);
+        data=$('#inquilino_form').serialize();
         $.ajax({
             type: "POST",
             url: url,
-            data: formData,
+            data: data,
             dataType: 'json',
             async: false,
-            cache:false,
-            contentType:false,
-            processData:false,
             error: function (data) {
                 alert('No se puedo completar la operación.');
             },
             success: function (data) {
                alert(mensaje);
-                 window.location.href = "<?php echo base_url()?>tenants";
+                 window.location.href = "<?php echo base_url()?>cliente";
                 }
         });
         
     }
     
-    function delet(code,roomcode){
-         eliminar=confirm("¿Deseas eliminar este registro?");
-        if (eliminar){
-             var codeparam = {
-                "codetenants" : code,
-                 "room" : roomcode
-                };
-             url='<?php echo base_url();?>tenants/delete_tenants';
-            $.ajax({
-                type: "POST",
-                url: url,
-                data: codeparam,
-                dataType: 'json',
-                async: false,
-                error: function (data) {
-                    alert('No se puedo completar la operación, por favor comunicarse con el administrador.');
-                },
-                success: function (data) {
-                   alert('Eliminado correctamente.');
-                    window.location.href = "<?php echo base_url()?>tenants";
-                }
-            });
-        }
-    }
-    function editar(codes){
-            limpiar();
-             var codeparam = {
-                "codetenants" : codes
-                };
-             url='<?php echo base_url();?>tenants/listedit_tenants';
-            $.ajax({
-                type: "POST",
-                url: url,
-                data: codeparam,
-                dataType: 'json',
-                async: false,
-                error: function (data) {
-                    alert('No se puedo completar la operación, por favor comunicarse con el administrador.');
-                },
-                success: function (data) {
-                //alert(data.room_Code);
-                $('#dni').val(data.person_Dni);
-                $('#nombre').val(data.person_Name);
-                $('#apellidop').val(data.person_LastName);
-                $('#apellidom').val(data.person_LastName2);
-                $('#telefono').val(data.person_Cellphone);
-                $('#telefono2').val(data.person_Cellphone2);
-                $('#direccion').val(data.person_DirectionOc);
-                $('#correo').val(data.person_Email);  
-                $('#ncuarto').val(data.room_Number); 
-                $('#nacimiento').val(data.person_BirthDate);
-               
-                
-                if(data.person_sex =='1'){
-                 $('#masculino').prop('checked', true);   
-                }
-                if(data.person_sex =='0'){
-                 $('#femenino').prop('checked', true);   
-                }
-                
-                  $('#id').val(codes);
-                  $('#titumodal').html('');
-                  $('#titumodal').append('MODIFICAR DATOS DEL INQUILINO: '+data.person_Name+'');
-                  $('.modal').css('display','block');
-		          $('#modal-bg').fadeIn();
-                  $( "#bodys").scrollTop( 0 );
-                }
-            });
-    
-        
-    }
-    function contrato(codes){
-    url = "<?php echo base_url();?>tenants/contrato/"+codes;
-    window.open(url, '', "width=800,height=600,menubars=no,resizable=no;");
-    }
-
     function limpiar(){
         $('#id').val('');
         $('#dni').val('');
@@ -155,50 +83,16 @@
         $('#correo').val('');  
         $('#nacimiento').val('');
     }
-    function print(){
-   
-   
-    var name = $("#nameb").val();
-    var apellido = $("#apellidob").val();
-    var cuarto = $("#cuartob").val();
-    var sexo = $("#sexob").val();
-    var dni = $("#dnib").val();
-    var estado = $("#estadob").val();
-    
-    if(name=="")  {name="-";}
-    if(apellido=="")  {apellido="-";}
-    if(cuarto=="")  {cuarto="-";}
-    if(dni=="")  {dni="-";}
-        
-//
-//    var datafechaIni="";var datafechafin="";
-//
-//    if(fech1=="") {
-//        fech1="--";
-//    }else{
-//        fechai=$("#fech1").val().split("/"); 
-//        fech1=fechai[2]+"-"+fechai[1]+"-"+fechai[0];
-//    }
-//
-//    if(fech2=="") {
-//        fech2="--";
-//    }else{
-//        fechaf=$("#fech2").val().split("/");
-//        fech2=fechaf[2]+"-"+fechaf[1]+"-"+fechaf[0];
-//
-//    }
-
-    url = "<?php echo base_url();?>tenants/print_pdf/"+name+"/"+apellido+"/"+cuarto+"/"+sexo+"/"+dni+"/"+estado;
-    window.open(url, '', "width=800,height=600,menubars=no,resizable=no;");
- 
-    }
 </script>
-
-
-<div class="modal-bg" id='modal'>
-<div id="moda" class="moda">
-	<span  id="titumodal">REGISTRO DE ADMINISTRADORES</span>
-   
+<br>
+<br>
+<div class="row col-md-1"></div>
+<div class="row col-md-10">
+            <div class="card">
+                <div class="card-header" data-background-color="green">
+                     <h4 class="title">Registro de Cliente</h4>
+                 </div>
+                <div class="card-content">
     <form id="inquilino_form" method="post" action="" enctype="multipart/form-data">
         <input type="hidden" name="id" id="id">
         <input type="hidden" name="idperson" id="idperson">
@@ -229,13 +123,19 @@
 	         </div>
 	    </div>
 	    <div class="row">
+            <div class="col-md-3">
+				 <div class="form-group ">
+					<label>Edad</label>
+					<input type="number" name="edad" id="edad">
+				 </div>
+            </div>
              <div class="col-md-3">
 				 <div class="form-group ">
 					<label>Telefono</label>
 					<input type="text" name="telefono" id="telefono">
 				 </div>
             </div>
-	         <div class="col-md-3">
+	         <div class="col-md-6">
 				 <div class="radio2">
                             <h4>Genero</h4>
                             <input type="radio" name="genero" id="masculino" value="1" checked> 
@@ -248,8 +148,11 @@
 	         </div>
 	    </div>
 		<center><a href="javascript:save();" class="btn btn-primary">Guardar</a>&nbsp;
-		<a href="<?php echo base_url();?>tenants" id="btclose" class="btn btn-success btclose">Cancelar</a></center>
+		<a href="<?php echo base_url();?>cliente" id="btclose" class="btn btn-success btclose">Cancelar</a></center>
 	</form>
-</div>
-</div>
-<script src="<?php echo base_url();?>assets/js/upload.js"></script>
+  <div class="clearfix"></div>
+               </div>
+             </div>
+  </div>
+                           
+	        

@@ -3,7 +3,7 @@ class Users extends CI_Controller{
     function __construct(){
         parent::__construct();
         $this->load->model('Users_model');
-        $this->load->model('Room_model');
+        $this->load->model('Habitacion_model');
         if(!isset($this->session->userdata['home_user'])||$this->session->userdata['home_user']==null){
         redirect(base_url());
         }

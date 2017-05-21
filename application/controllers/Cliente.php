@@ -2,12 +2,12 @@
 include("application/libraries/cezpdf.php");
 include("application/libraries/class.backgroundpdf.php");
 
-class Tenants extends CI_Controller{
+class Cliente extends CI_Controller{
     
     function __construct(){
         parent::__construct();
         $this->load->model('cliente_model');
-        $this->load->model('Room_model');
+        $this->load->model('Habitacion_model');
         $this->load->model('Users_model');
         $this->load->helper('form');
         if(!isset($this->session->userdata['home_user'])||$this->session->userdata['home_user']==null){
@@ -22,16 +22,22 @@ class Tenants extends CI_Controller{
         $data['imagen']=$userlist->person_Photo;
         
         //FIN datos para el menu
-        $list=$this->cliente_model->get_list();
+        
+        
+        $list=$this->cliente_model->get_list();//obtiene la lista
+        
         $data['list']=$list;
+        
+        
+        
         
         $data['name']='';
         $data['apellido']='';
-        $data['cuarto']='';
+        //$data['cuarto']='';
         $data['dni']='';
         $data['estado']=form_dropdown('estado', array('1'=> 'Actuales','0'=> 'Pasados','2'=> 'Todos'), '1','id="estadob" class="form-control"');
         $data['sexo']=form_dropdown('sexo', array('2'=> 'Selecciona','1'=> 'Hombres','0'=> 'Mujeres'), '2','id="sexob" class="form-control"');
-        $ncuato = $this->Room_model->listar_ncuarto();
+        $ncuato = $this->Habitacion_model->listar_ncuarto();
         $options = array(''=> 'selecciona');
         if(count($ncuato)){
             foreach($ncuato as $value){
@@ -40,10 +46,24 @@ class Tenants extends CI_Controller{
         }
         $data['ncuarto']=form_dropdown('ncuarto', $options, '','id="ncuarto"');
         
-        $data['active']="tenants";
+        $data['active']="cliente";
         $data['titulo']="Mantenimiento de Inquilinos";
+        
+        
        $this->cargarvista('cliente_index',$data);
     }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
     public function nuevo(){
         //datos para el menu
         $usercode=$this->session->userdata['home_user'];
@@ -60,7 +80,7 @@ class Tenants extends CI_Controller{
         $data['dni']='';
         $data['estado']=form_dropdown('estado', array('1'=> 'Actuales','0'=> 'Pasados','2'=> 'Todos'), '1','id="estadob" class="form-control"');
         $data['sexo']=form_dropdown('sexo', array('2'=> 'Selecciona','1'=> 'Hombres','0'=> 'Mujeres'), '2','id="sexob" class="form-control"');
-        $ncuato = $this->Room_model->listar_ncuarto();
+        $ncuato = $this->Habitacion_model->listar_ncuarto();
         $options = array(''=> 'selecciona');
         if(count($ncuato)){
             foreach($ncuato as $value){
@@ -69,22 +89,20 @@ class Tenants extends CI_Controller{
         }
         $data['ncuarto']=form_dropdown('ncuarto', $options, '','id="ncuarto"');
         
-        $data['active']="tenants";
+        $data['active']="cliente";
         $data['titulo']="Cliente nuevo";
        $this->cargarvista('nuevo_cliente.php',$data);
     }
      public function search(){
-         //datos para el menu
+         //datos para el menu 
         $usercode=$this->session->userdata['home_user'];
         $userlist=$this->Users_model->edit($usercode);//metodo llamar datos por codigo
         $data['user']=$userlist->person_Name.' '.$userlist->person_LastName;
         $data['imagen']=$userlist->person_Photo;
-        //$roomscobros=$this->Room_model->get_cobros('0');
-        //$data['npay']=count($roomscobros);
         //FIN datos para el menu
          $name=$this->input->post('name');
          $apellido=$this->input->post('apellido');
-         //$cuarto=$this->input->post('cuarto');
+        // $cuarto=$this->input->post('cuarto');
          $sexo=$this->input->post('sexo');
          $dni=$this->input->post('dni');
          $estado=$this->input->post('estado');
@@ -95,23 +113,23 @@ class Tenants extends CI_Controller{
         
         $data['name']=$name;
         $data['apellido']=$apellido;
-        //$data['cuarto']=$cuarto;
+       // $data['cuarto']=$cuarto;
         $data['sexo']=$sexo;
         $data['dni']=$dni;
         $data['estado']=form_dropdown('estado', array('1'=> 'Actuales','0'=> 'Pasados','2'=> 'Todos'), $estado,'id="estadob" class="form-control"');
         $data['sexo']=form_dropdown('sexo', array('2'=> 'Selecciona','1'=> 'Hombres','0'=> 'Mujeres'),$sexo,'id="sexob" class="form-control"');
          
-        $data['active']="tenants";
+        $data['active']="cliente";
         $data['titulo']="Mantenimiento de Inquilinos";
         $this->cargarvista('cliente_index',$data);
         }
-    public function add_tenants(){
+    public function add_cliente(){
        $dni =$this->input->post('dni');
          $nombre=$this->input->post('nombre');
          $apellidop=$this->input->post('apellidop');
          $apellidom=$this->input->post('apellidom');
          $telefono=$this->input->post('telefono');
-         //$photo=$this->input->post('photo');
+         $edad=$this->input->post('edad');
          $genero=$this->input->post('genero');
         
         
@@ -119,7 +137,7 @@ class Tenants extends CI_Controller{
         $filter->person_Name=$nombre;
         $filter->person_LastName=$apellidop;
         $filter->person_LastName2=$apellidom;
-        //$filter->person_BirthDate='2017-04-19';
+        $filter->person_Edad=$edad;
         $filter->person_Dni=$dni;
         $filter->person_sex=$genero;
         $filter->person_Cellphone=$telefono;
@@ -145,20 +163,14 @@ class Tenants extends CI_Controller{
         $this->load->view("layout/footer");
     }
     
-     public function delete_tenants(){
+     public function delete_cliente(){
          $codetenants =$this->input->post('codetenants');
-         $room =$this->input->post('room');
         
         $this->cliente_model->delete_tenants($codetenants);
         
-        $result=$this->cliente_model->existe_tnt_room($room);//preguntamos si hay personas en ese cuarto
-         if(count($result)<1){//si no hay ponemos que el cuarto esta desocupado
-            $this->Room_model->desocupar_room($room);
-         }
-        
         exit('{"result":"ok","codigo":"1"}');
     }
-    public function listedit_tenants(){
+    public function listedit_cliente(){
         
          $code=$this->input->post('codetenants');
          
@@ -209,122 +221,7 @@ class Tenants extends CI_Controller{
         exit('{"result":"ok","codigo":"'.$genero.'"}');
         
         }
-     public function print_pdf($name,$apellido,$cuarto,$sexo,$dni,$estado){
-
-      $fechahoy = date('d/m/Y');
-      $titulo="REPORTE: ".$fechahoy;
-
-         
-        $this->cezpdf = new cezpdf('a4','portrait');
-        $this->cezpdf->selectFont('fonts/Helvetica.afm');
-        /* Cabecera */
-        $delta = 20;
-
-        $listado = $this->cliente_model->get_pdf($name,$apellido,$cuarto,$sexo,$dni,$estado);
-
-       
-        $codigo="";
-        $sum = 0;
-        foreach ($listado as $key => $value) {
-           
-            $db_data[] = array(
-                'col1' => $key + 1,
-                'col2' => $value->person_Dni,
-                'col3' => $value->person_Name.' '.$value->person_LastName.' '.$value->person_LastName2,
-                'col4' => $value->room_Number,
-                'col5' => $value->person_Cellphone,
-                'col6' => date_format(date_create($value->tnt_RegistrationDate),'d-m-Y')
-            );
-        }
-          
-        $col_names = array(
-            'col1' => '<b>Itm</b>',
-            'col2' => '<b>DNI</b>',
-            'col3' => '<b>NOMBRES Y APELLIDOS</b>',
-            'col4' => '<b>CUARTO</b>',
-            'col5' => '<b>TELEFONO</b>',
-            'col6' => '<b>FECH. REGISTRO</b>'
-        );
-    
-    $this->cezpdf->ezText('', '', array("leading" => 5));
-         
-    //$this->cezpdf->ezImage(base_url()."assets/img/logo.jpg", 30, 130, 'none', 'left');
-	$this->cezpdf->ezText('', '', array("leading" => 0));
-	
-	$this->cezpdf->ezText('<b>TOTAL DE INQUILINOS :   </b>'.count($listado), 9, array("leading" => -50, 'left' => 200));
-	$this->cezpdf->ezText('<b>FECHA DE REPORTE   :   </b>'.date('Y-m-d'), 9, array("leading" => 15, 'left' => 200));
-	
-	$this->cezpdf->ezText('', '', array("leading" => 5));
-	$this->cezpdf->ezText('<b> LISTA DE INQUILINOS</b>', 14, array("leading" => 30, 'left' => 175));
-	$this->cezpdf->ezText('', '', array("leading" => 2));
-	//$this->cezpdf->ezText('<b>TOTAL DE INQUILINOS:   </b>'.count($listado), 8, array("leading" => 15, 'left' => 40));
-	$this->cezpdf->ezText('', '', array("leading" => 8));
-
-
-        $this->cezpdf->ezTable($db_data, $col_names, '', array(
-            'width' => 500,
-            'showLines' => 1,
-            'shaded' => 1,//FONDO ENTRE LINEAS
-            'showHeadings' => 1,
-            'xPos' => 'center',
-            'fontSize' => 8,
-            'cols' => array(
-                'col1' => array('width' => 25, 'justification' => 'center'),
-                'col2' => array('width' => 75, 'justification' => 'center'),
-                'col3' => array('width' => 160, 'justification' => 'center'),
-                'col4' => array('width' => 60, 'justification' => 'center'),
-                'col5' => array('width' => 70, 'justification' => 'center'),
-                'col6' => array('width' => 90, 'justification' => 'center')
-            )
-        ));
-      
-        $cabecera = array('Content-Type' => 'application/pdf', 'Content-Disposition' => 'nama_file.pdf', 'Expires' => '0', 'Pragma' => 'cache', 'Cache-Control' => 'private');
-        $this->cezpdf->ezStream($cabecera);
-    }
-    
-     public function contrato($id){
-
-      $this->cezpdf = new cezpdf('a4','portrait');
-      $this->cezpdf->selectFont('fonts/Helvetica.afm');
-       
-      $listado = $this->cliente_model->contrato($id);
-
-       
-        foreach ($listado as $key => $value) {
-                $dni = $value->person_Dni;
-                $nombre = $value->person_Name.' '.$value->person_LastName.' '.$value->person_LastName2;
-                $price=$value->room_Price;
-        }
-          
-    $this->cezpdf->ezSetCmMargins(2,2,2,2);
-    $this->cezpdf->ezText(utf8_decode('<b> CONTRATO DE PAGO POR USO DE HABITACIÓN</b>'), 14, array("leading" => 30, 'left' => 60));
-    $this->cezpdf->ezText('', 14, array("leading" => 30, 'left' => 10));
-    
-    
-    $this->cezpdf->ezText(utf8_decode('Por medio de este documento se establece lo siguiente: Que el sr.(Srta.) <b>'.$nombre.'</b>, con DNI <b>'.$dni.'</b> quien en adelante se le llamará EL INQUILINO, ha solicitado una habitación en Pasaje Justo Figuerola 132 Lince, para sus fines convenientes a la Sra. Lastenia Frohlich Frohlich quien en adelante se le llamará LA PROPIETARIA.'), 12, array("leading" => 16,'justification'=>''));
-       
-     $this->cezpdf->ezText('', 14, array("leading" => 10));
-         
-    $this->cezpdf->ezText(utf8_decode('Primero; la cantidad pactada es de <b>S/.'.number_format($price,2).'</b>  nuevos soles ('.$this->numtoletras(number_format($price,2)).') mensual, por un tiempo acordado de ___ meses. De ser requerido más tiempo por EL INQUILINO la habitación, se procederá a la elaboración de un nuevo contrato si este último hubiera cumplido satisfactoriamente las normas de conducta estipuladas en el párrafo segundo.'), 12, array("leading" => 16,'justification'=>'rigth'));
-
-     $this->cezpdf->ezText('', 14, array("leading" => 10));
-         
-    $this->cezpdf->ezText(utf8_decode('Segundo; La habitación se entrega siempre de muy buen estado y por ende deberá ser devuelta al termino del contrato de la misma  forma, dado la conducta  y buenos principios de la casa EL INQUILINO deberá asumir comportamiento igual, respetando la privacidad y tranquilidad del vecino, la limpieza de las áreas en común es de responsabilidad compartida en cronograma de fecha, las puertas de acceso a la calle deberán permanecer bajo llave las 24 hrs.'), 12, array("leading" => 16));
-         
-    $this->cezpdf->ezText('', 14, array("leading" => 10 ));
-         
-    $this->cezpdf->ezText(utf8_decode('Tercero; los casos que EL INQUILINO deberá abonar dinero extra son; a) al quedarse hasta el otro día de su visita, (20 soles por dia y por persona) b) al uso de artefactos eléctricos como lavadora, cocina eléctrica, refrigeradora (30 soles al mes c/u) c) perdida de sus llaves porque se tendrá que cambiar el tambor y duplicado de llaves en general  (50 soles por perdida) d) por malograr, manchar o romper cualquier ambiente del inmueble (según cueste la reparación).'), 12, array("leading" => 16));
-         
-    $this->cezpdf->ezText('', 14, array("leading" => 10));    
-         
-    $this->cezpdf->ezText(utf8_decode('Quedando muy en claro y comprendido los párrafos del contrato tanto EL INQUILINO como LA PROPIETARIA firman  en conformidad  a las ____ hrs. Del dia _______, __ de __________ del '.date('Y').'
-'), 12, array("leading" => 16));
-	
-        
-        $cabecera = array('Content-Type' => 'application/pdf', 'Content-Disposition' => 'nama_file.pdf', 'Expires' => '0', 'Pragma' => 'cache', 'Cache-Control' => 'private');
-        $this->cezpdf->ezStream($cabecera);
-    }
-
+  
 
 public function numtoletras($xcifra)
 {
@@ -475,7 +372,79 @@ public function numtoletras($xcifra)
 }
  
 // END FUNCTION
- 
+public function print_pdf($name,$apellido,$sexo,$dni,$estado){
+
+      $fechahoy = date('d/m/Y');
+      $titulo="REPORTE: ".$fechahoy;
+
+         
+        $this->cezpdf = new cezpdf('a4','portrait');
+        $this->cezpdf->selectFont('fonts/Helvetica.afm');
+        /* Cabecera */
+        $delta = 20;
+
+        $listado = $this->cliente_model->get_pdf($name,$apellido,$sexo,$dni,$estado);
+
+       
+        $codigo="";
+        $sum = 0;
+        foreach ($listado as $key => $value) {
+            $db_data[] = array(
+                'col1' => $key + 1,
+                'col2' => $value->person_Dni,
+                'col3' => $value->person_Name.' '.$value->person_LastName.' '.$value->person_LastName2,
+                'col4' => 56,
+                'col5' => $value->person_Cellphone,
+                'col6' => date_format(date_create($value->tnt_RegistrationDate),'d-m-Y')
+            );
+        }
+          
+        $col_names = array(
+            'col1' => '<b>Itm</b>',
+            'col2' => '<b>DNI</b>',
+            'col3' => '<b>NOMBRES Y APELLIDOS</b>',
+            'col4' => '<b>CUARTO</b>',
+            'col5' => '<b>TELEFONO</b>',
+            'col6' => '<b>FECH. REGISTRO</b>'
+        );
+    
+    $this->cezpdf->ezText('', '', array("leading" => 5));
+         
+    //$this->cezpdf->ezImage(base_url()."assets/img/logo.jpg", 30, 130, 'none', 'left');
+	$this->cezpdf->ezText('', '', array("leading" => 0));
+	
+	$this->cezpdf->ezText('<b>TOTAL DE INQUILINOS :   </b>'.count($listado), 9, array("leading" => -50, 'left' => 200));
+	$this->cezpdf->ezText('<b>FECHA DE REPORTE   :   </b>'.date('Y-m-d'), 9, array("leading" => 15, 'left' => 200));
+	
+	$this->cezpdf->ezText('', '', array("leading" => 5));
+	$this->cezpdf->ezText('<b> LISTA DE INQUILINOS</b>', 14, array("leading" => 30, 'left' => 175));
+	$this->cezpdf->ezText('', '', array("leading" => 2));
+	//$this->cezpdf->ezText('<b>TOTAL DE INQUILINOS:   </b>'.count($listado), 8, array("leading" => 15, 'left' => 40));
+	$this->cezpdf->ezText('', '', array("leading" => 8));
+
+
+        $this->cezpdf->ezTable($db_data, $col_names, '', array(
+            'width' => 500,
+            'showLines' => 1,
+            'shaded' => 1,//FONDO ENTRE LINEAS
+            'showHeadings' => 1,
+            'xPos' => 'center',
+            'fontSize' => 8,
+            'cols' => array(
+                'col1' => array('width' => 25, 'justification' => 'center'),
+                'col2' => array('width' => 75, 'justification' => 'center'),
+                'col3' => array('width' => 160, 'justification' => 'center'),
+                'col4' => array('width' => 60, 'justification' => 'center'),
+                'col5' => array('width' => 70, 'justification' => 'center'),
+                'col6' => array('width' => 90, 'justification' => 'center')
+            )
+        ));
+      
+        $cabecera = array('Content-Type' => 'application/pdf', 'Content-Disposition' => 'nama_file.pdf', 'Expires' => '0', 'Pragma' => 'cache', 'Cache-Control' => 'private');
+        $this->cezpdf->ezStream($cabecera);
+    }
+    
+    
 public function subfijo($xx)
 { // esta función regresa un subfijo para la cifra
     $xx = trim($xx);
