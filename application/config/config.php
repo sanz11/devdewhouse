@@ -24,7 +24,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 */
 //$config['base_url'] = 'https://devdew.com/proyects/devdewhome/';
-//$config['base_url'] = 'http://localhost/tesischicas/';
+//$config['base_url'] = 'http://localhost/tesischicas/'jj;
 $config['base_url'] = 'http://localhost/devdewhouse/';
 /*
 |--------------------------------------------------------------------------
