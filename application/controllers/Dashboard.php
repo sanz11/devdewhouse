@@ -18,12 +18,10 @@ class Dashboard extends CI_Controller{
         $userlist=$this->Users_model->edit($usercode);//metodo llamar datos por codigo
         $data['user']=$userlist->person_Name.' '.$userlist->person_LastName;
         $data['imagen']=$userlist->person_Photo;
-        $roomscobros=$this->Room_model->get_cobros('0');
-        $data['npay']=count($roomscobros);
         //FIN datos para el menu
         
         $tenants=$this->cliente_model->get_list();
-        $rooms=$this->Room_model->get_list('1');
+        $rooms=$this->Room_model->listar_ncuarto();
         $data['list']=$rooms;
         $roomsfree=$this->Room_model->get_list('0');
         
@@ -40,7 +38,5 @@ class Dashboard extends CI_Controller{
         $this->load->view("layout/footer");
     }
 }
-
-
 
 ?>

@@ -9,7 +9,6 @@ class Room_model extends CI_Model{
             $this->db->where('room_Occupied',$free);
         if($cobro!='')
             $this->db->order_by('room_Occupied','desc');
-            $this->db->order_by('room_DatePay','asc');
             
         $query=$this->db->get();
         
