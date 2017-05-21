@@ -280,9 +280,8 @@
                                                     <td><?php echo $value->person_Dni; ?></td>
                                                     <td><?php echo $value->person_Name; ?></td>
                                                     <td><?php echo $value->person_LastName." ".$value->person_LastName2; ?></td>
-                                                    <!--<td><?php echo $value->room_Number; ?></td>-->
                                                    <td>
-                                                        <a href="javascript:;" onclick="delet(<?php echo $value->tnt_Code; ?>,<?php echo $value->room_Code; ?>);">
+                                                        <a href="javascript:;" onclick="delet(<?php echo $value->tnt_Code; ?>);">
                                                         <img src="<?php echo base_url();?>assets/img/iconos/deleteuser.png" title="Eliminar" class="iconocus">
                                                         </a>
                                                         <a href="javascript:;" onclick="editar(<?php echo $value->tnt_Code; ?>);">

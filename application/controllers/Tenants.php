@@ -20,8 +20,7 @@ class Tenants extends CI_Controller{
         $userlist=$this->Users_model->edit($usercode);//metodo llamar datos por codigo
         $data['user']=$userlist->person_Name.' '.$userlist->person_LastName;
         $data['imagen']=$userlist->person_Photo;
-        $roomscobros=$this->Room_model->get_cobros('0');
-        $data['npay']=count($roomscobros);
+        
         //FIN datos para el menu
         $list=$this->cliente_model->get_list();
         $data['list']=$list;
@@ -51,8 +50,6 @@ class Tenants extends CI_Controller{
         $userlist=$this->Users_model->edit($usercode);//metodo llamar datos por codigo
         $data['user']=$userlist->person_Name.' '.$userlist->person_LastName;
         $data['imagen']=$userlist->person_Photo;
-        $roomscobros=$this->Room_model->get_cobros('0');
-        $data['npay']=count($roomscobros);
         //FIN datos para el menu
        $list=$this->cliente_model->get_list();
         $data['list']=$list;

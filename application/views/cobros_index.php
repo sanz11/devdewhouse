@@ -335,46 +335,36 @@
                                                 <th>Número</th>
                                                 <th>Piso</th>
                                                 <th>Medida</th>
-                                                <th>Precio</th>
-                                                <th>Ocupado</th>
-                                                <th>Fecha de Pago</th>
-                                                <th>Opción</th>
+                                                <th>Precio</th>>
                                             </thead>
 
                                             <tbody>
                                         <?php if(count($list)>0){ 
                                                 foreach($list as $indice => $value){?>
                                                      <tr>
-                                                    <td> <?php echo $indice+1; ?>  </td>
-                                                    <td><?php echo $value->room_Number; ?></td>
-                                                    <td><?php echo $value->room_Floor; ?></td>
-                                                    <td><?php echo $value->room_Size; ?> m</td>
-                                                     <td>S/.<?php echo $value->room_Price; ?></td>
-                                                   <?php if($value->room_Occupied==0){?>
-                                                        <td><span class="tag">Disponible</span></td>
-                                                         <td></td>
-                                                     <?php }else{?>
-                                                         <td><span class="tag2">Ocupado</span></td>
-                                                          <td><?php echo $value->room_DatePay; ?></td>
-                                                      <?php }?>
+                                                    <td> </td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                     
                                                    <td>
-                                                        <?php if($value->room_Occupied==0){?>
-                                                        <a href="javascript:;" onclick="delet(<?php echo $value->room_Code; ?>);">
+                                                        
+                                                        <a href="javascript:;" onclick="delet();">
                                                         <img src="<?php echo base_url();?>assets/img/iconos/delete.png" title="Eliminar" class="iconocus">
-                                                        <?php }?>
+                                                        
                                                         </a>
-                                                        <a href="javascript:;" onclick="editar(<?php echo $value->room_Code; ?>);">
+                                                        <a href="javascript:;" onclick="editar();">
                                                         <img src="<?php echo base_url();?>assets/img/iconos/editar.png" title="Editar Datos" class="iconocus">
                                                         </a>
-                                                        <a href="javascript:;" onclick="verdetalle(<?php echo $value->room_Code; ?>);">
+                                                        <a href="javascript:;" onclick="verdetalle();">
                                                         <img src="<?php echo base_url();?>assets/img/iconos/verdetalle.png" title="Ver Detalle" class="iconocus2">
                                                         </a>
-                                                 <?php if($value->room_Occupied==1){?>
+                                                
                                                         
-                                                         <a href="javascript:;" onclick="desocupa(<?php echo $value->room_Code; ?>);">
+                                                         <a href="javascript:;" onclick="desocupa();">
                                                         <img src="<?php echo base_url();?>assets/img/iconos/desocupar.png" title="DESOCUPAR" style="width:30px">
                                                         </a>
-                                                    <?php }?>
+                                                    
                                                     </td>
                                                 </tr>
 

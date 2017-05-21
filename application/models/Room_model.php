@@ -9,7 +9,6 @@ class Room_model extends CI_Model{
             $this->db->where('room_Occupied',$free);
         if($cobro!='')
             $this->db->order_by('room_Occupied','desc');
-            $this->db->order_by('room_DatePay','asc');
             
         $query=$this->db->get();
         
@@ -115,22 +114,6 @@ class Room_model extends CI_Model{
             return $data;
         }  
     }
-    public function get_cobros(){
-      $this->db->select('*');
-      $this->db->from('caf_room');
-      $this->db->where('Day(room_DatePay)>=',date('d'));
-      $this->db->where('room_Occupied',1);
-      $this->db->where('room_State',1);
-      $this->db->order_by('room_Number','asc');
-            
-        $query=$this->db->get();
-        
-        if($query->num_rows()>0){
-            foreach($query->result() as $value){
-                $data[]=$value;
-            }
-            return $data;
-        }  
-    }
+    
 }
 ?>

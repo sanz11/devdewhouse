@@ -41,7 +41,7 @@
 								</div>
 								<div class="card-content">
 									<p class="category">Cobros</p>
-									<h3 class="title"><?php echo $npay; ?></h3>
+									<h3 class="title">4</h3>
 								</div>
 								<div class="card-footer">
 									<div class="stats">

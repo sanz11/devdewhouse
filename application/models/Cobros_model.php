@@ -5,7 +5,7 @@ class Cobros_model extends CI_Model{
         $this->db->select('*');
         $this->db->from('caf_cobros');
         $this->db->where('cob_State',1);
-        $this->db->where('Year(cob_DatePay)',$anio);
+         $this->db->where('Year(cob_DatePay)',$anio);
         $this->db->where('Month(cob_DatePay)',$mes);
         $this->db->where('room_Code',$code);
         $query=$this->db->get();
@@ -17,6 +17,7 @@ class Cobros_model extends CI_Model{
             return $data;
         }
     }
+        
     public function cobrar($filter){
         $this->db->insert('caf_cobros',(array)$filter);
         return $this->db->insert_id();
