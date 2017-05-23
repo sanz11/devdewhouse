@@ -157,7 +157,7 @@
            
         </div>
 	    </div>
-		<center><a href="javascript:save();"  class="btn btn-primary" >Guardar</a>&nbsp;<a href="<?php echo base_url();?>habitacion" class="btn btn-success btclose">Cancelar</a></center>
+		<center><a href="javascript:save();"  class="btn btn-success" >Guardar</a>&nbsp;<a href="<?php echo base_url();?>habitacion" class="btn btn-info btclose">Cancelar</a></center>
 	</form>
           
                 <div class="clearfix"></div>

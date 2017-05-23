@@ -197,7 +197,7 @@
                          <div class="row">
                             <div class="col-md-8">
                                 <div class="card">
-                                    <div class="card-header" data-background-color="orange">
+                                    <div class="card-header" data-background-color="green">
                                         <h4 class="title">Buscar Administrador</h4>
                                         <!--<p class="category"></p>-->
                                     </div>
@@ -221,9 +221,9 @@
                                             </div>
 
                                  <!-- <a id="print" class="btn btn-primary pull-right">IMPRIMIR</a>-->
-                                  <a href="<?php echo base_url();?>users/nuevo"id="newusers"class="btn btn-warning pull-right ">NUEVA</a>
-                                  <a href="<?php echo base_url();?>users" class="btn btn-warning pull-right">LIMPIAR</a>
-                                  <button type="submit"class="btn btn-warning pull-right">BUSCAR</button>
+                                  <a href="<?php echo base_url();?>users/nuevo"id="newusers"class="btn btn-success pull-right ">NUEVA</a>
+                                  <a href="<?php echo base_url();?>users" class="btn btn-success pull-right">LIMPIAR</a>
+                                  <button type="submit"class="btn btn-success pull-right">BUSCAR</button>
 
                                             <div class="clearfix"></div>
                                         </form>
@@ -248,7 +248,7 @@
                       <div class="row">
                             <div class="col-md-12">
                                 <div class="card">
-                                    <div class="card-header" data-background-color="orange">
+                                    <div class="card-header" data-background-color="green">
                                         <h4 class="title">LISTA DE USUARIOS</h4>
                                         <p class="category"> <?php echo count($list);?> Usuarios encontrados</p>
                                     </div>
@@ -393,8 +393,8 @@
 	         <div class="col-md-3 " id="vista-previa"> </div>
 	    </div>
 	    
-		<center><a href="javascript:save();" class="btn btn-primary">Guardar</a>&nbsp;
-		<a href="<?php echo base_url();?>users" id="btclose" class="btn btn-success btclose">Cancelar</a></center>
+		<center><a href="javascript:save();" class="btn btn-success">Guardar</a>&nbsp;
+		<a href="<?php echo base_url();?>users" id="btclose" class="btn btn-info btclose">Cancelar</a></center>
 	</form>
 </div>
 </div>

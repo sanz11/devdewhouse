@@ -264,8 +264,8 @@
                                              <div class="row">
                             <div class="col-md-12">
                                 <div class="card">
-                                    <div class="card-header" data-background-color="purple">
-                                        <h4 class="title">Buscar Clientes</h4>
+                                    <div class="card-header" data-background-color="green">
+                                        <h4 class="title">Buscar Habitaciones</h4>
                                         
                                     </div>
                                     <div class="card-content">
@@ -294,10 +294,10 @@
                                                 </div>
 											</div>
                                             
-                                  <a id="print" class="btn btn-primary pull-right" href="javascript:print();">IMPRIMIR</a>
-                                  <a href="<?php echo base_url();?>habitacion/nuevo"id="newtenants"class="btn btn-primary pull-right ">NUEVA</a>
-                                  <a href="<?php echo base_url();?>habitacion" class="btn btn-primary pull-right">LIMPIAR</a>
-                                  <button type="submit"class="btn btn-primary pull-right">BUSCAR</button>
+                                  <a id="print" class="btn btn-success pull-right" href="javascript:print();">IMPRIMIR</a>
+                                  <a href="<?php echo base_url();?>habitacion/nuevo"id="newtenants"class="btn btn-success pull-right ">NUEVA</a>
+                                  <a href="<?php echo base_url();?>habitacion" class="btn btn-success pull-right">LIMPIAR</a>
+                                  <button type="submit"class="btn btn-success pull-right">BUSCAR</button>
 
                                             
                                         </form>
@@ -312,7 +312,7 @@
                       <div class="row">
                             <div class="col-md-12">
                                 <div class="card">
-                                    <div class="card-header" data-background-color="purple">
+                                    <div class="card-header" data-background-color="green">
                                         <h4 class="title">LISTA DE HABITACIONES</h4>
                                         <p class="category"> <?php echo count($list);?> Habitaciones encontradas</p>
                                     </div>
@@ -448,7 +448,7 @@
              </div>
            
         </div>
-		<center><a href="javascript:save();" class="btn btn-primary">Guardar</a>&nbsp;<a  class="btn btn-success btclose">Cancelar</a></center>
+		<center><a href="javascript:save();" class="btn btn-success">Guardar</a>&nbsp;<a  class="btn btn-info btclose">Cancelar</a></center>
 	</form>
 </div>
 </div>
