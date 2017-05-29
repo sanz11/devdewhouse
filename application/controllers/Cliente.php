@@ -1,12 +1,13 @@
 <?php 
-include("application/libraries/cezpdf.php");
+
+include("application/libraries/class.ezpdf.php");
 include("application/libraries/class.backgroundpdf.php");
 
 class Cliente extends CI_Controller{
     
     function __construct(){
         parent::__construct();
-        $this->load->model('cliente_model');
+        $this->load->model('Cliente_model');
         $this->load->model('Habitacion_model');
         $this->load->model('Users_model');
         $this->load->helper('form');
@@ -24,7 +25,7 @@ class Cliente extends CI_Controller{
         //FIN datos para el menu
         
         
-        $list=$this->cliente_model->get_list();//obtiene la lista
+        $list=$this->Cliente_model->get_list();//obtiene la lista
         
         $data['list']=$list;
         
@@ -35,7 +36,7 @@ class Cliente extends CI_Controller{
         $data['apellido']='';
         //$data['cuarto']='';
         $data['dni']='';
-        $data['estado']=form_dropdown('estado', array('1'=> 'Actuales','0'=> 'Pasados','2'=> 'Todos'), '1','id="estadob" class="form-control"');
+        $data['estado']=form_dropdown('estado', array('2'=> 'Actuales','0'=> 'Eliminados','1'=> 'Registrados'), '2','id="estadob" class="form-control"');
         $data['sexo']=form_dropdown('sexo', array('2'=> 'Selecciona','1'=> 'Hombres','0'=> 'Mujeres'), '2','id="sexob" class="form-control"');
         $ncuato = $this->Habitacion_model->listar_ncuarto();
         $options = array(''=> 'selecciona');
@@ -51,19 +52,7 @@ class Cliente extends CI_Controller{
         
         
        $this->cargarvista('cliente_index',$data);
-    }
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+    }        
     public function nuevo(){
         //datos para el menu
         $usercode=$this->session->userdata['home_user'];
@@ -71,7 +60,7 @@ class Cliente extends CI_Controller{
         $data['user']=$userlist->person_Name.' '.$userlist->person_LastName;
         $data['imagen']=$userlist->person_Photo;
         //FIN datos para el menu
-       $list=$this->cliente_model->get_list();
+       $list=$this->Cliente_model->get_list();
         $data['list']=$list;
         
         $data['name']='';
@@ -107,7 +96,7 @@ class Cliente extends CI_Controller{
          $dni=$this->input->post('dni');
          $estado=$this->input->post('estado');
          
-         $result=$this->cliente_model->search($name,$apellido,$sexo,$dni,$estado);
+         $result=$this->Cliente_model->search($name,$apellido,$sexo,$dni,$estado);
          
          $data['list']=$result;
         
@@ -116,7 +105,7 @@ class Cliente extends CI_Controller{
        // $data['cuarto']=$cuarto;
         $data['sexo']=$sexo;
         $data['dni']=$dni;
-        $data['estado']=form_dropdown('estado', array('1'=> 'Actuales','0'=> 'Pasados','2'=> 'Todos'), $estado,'id="estadob" class="form-control"');
+        $data['estado']=form_dropdown('estado', array('2'=> 'Actuales','0'=> 'Eliminados','1'=> 'Registrados'), $estado,'id="estadob" class="form-control"');
         $data['sexo']=form_dropdown('sexo', array('2'=> 'Selecciona','1'=> 'Hombres','0'=> 'Mujeres'),$sexo,'id="sexob" class="form-control"');
          
         $data['active']="cliente";
@@ -143,18 +132,25 @@ class Cliente extends CI_Controller{
         $filter->person_Cellphone=$telefono;
         $filter->person_State=1;
         
-        $idperson=$this->cliente_model->add_person($filter);
+        $idperson=$this->Cliente_model->add_person($filter);
         
-        $users=$this->cliente_model->add_tenants($idperson);
+        $users=$this->Cliente_model->add_tenants($idperson);
         exit('{"result":"ok","codigo":"'.$users.'"}');
         
     }
-    public function get_person_room(){
-        $code=$this->input->post('room');
-        $result=$this->cliente_model->get_person_room($code);
-         
+    
+    public function cliente_autocomplete(){
+         $name =$this->input->post('name');
+        $consulta=$this->Cliente_model->cliente_autocomplete($name);
+        if (count($consulta)>0) {
+    		foreach ($consulta as $cliente => $value) {
+    			 $result[] = array("value" => $value->person_Name ." ". $value->person_LastName. "  - " . $value->person_Dni, "code" => $value->tnt_Code);
+    		}
+    	}
+        else{
+             $result[] = array("value" => 'No hay datos', "code" => '0');
+        }
         echo json_encode($result);
-        
         }
     public function cargarvista($view,$data){
         $this->load->view("layout/menu",$data);
@@ -166,15 +162,15 @@ class Cliente extends CI_Controller{
      public function delete_cliente(){
          $codetenants =$this->input->post('codetenants');
         
-        $this->cliente_model->delete_tenants($codetenants);
+        $this->Cliente_model->delete_tenants($codetenants);
         
         exit('{"result":"ok","codigo":"1"}');
     }
     public function listedit_cliente(){
         
-         $code=$this->input->post('codetenants');
+         $code=$this->input->post('codecliente');
          
-         $result=$this->cliente_model->edit($code);
+         $result=$this->Cliente_model->edit($code);
          
          echo json_encode($result);
     }
@@ -184,12 +180,7 @@ class Cliente extends CI_Controller{
          $nombre=$this->input->post('nombre');
          $apellidop=$this->input->post('apellidop');
          $apellidom=$this->input->post('apellidom');
-         //$correo=$this->input->post('correo');
          $telefono=$this->input->post('telefono');
-         /*$telefono2=$this->input->post('telefono2');
-         $direccion=$this->input->post('direccion');
-         $ncuarto=$this->input->post('ncuarto');
-         $nacimiento=$this->input->post('nacimiento');*/
          $genero=$this->input->post('genero');
         
         $filter = new stdClass();
@@ -200,29 +191,22 @@ class Cliente extends CI_Controller{
         $filter->person_Dni=$dni;
         $filter->person_sex=$genero;
         $filter->person_Cellphone=$telefono;
-        /*$filter->person_Cellphone2=$telefono2;
-         $filter->person_Email=$correo;
-        $filter->person_DirectionOc=$direccion;*/
         
-        $datatnt=$this->cliente_model->get_data_tenants($id);
-        $idperson=$this->cliente_model->update_person($datatnt[0]->person_Code,$filter);//editamos en la tabla persona
+        $datatnt=$this->Cliente_model->get_data_tenants($id);
+        $idperson=$this->Cliente_model->update_person($datatnt[0]->person_Code,$filter);//editamos en la tabla persona
         
-        //$idcuarto=$this->cliente_model->select_room($ncuarto);//obtenemos el id cuarto del nuevo cuarto
-        //$this->cliente_model->ocupied_room($idcuarto[0]->room_Code);//modificamos a ocupado el cuarto
-        
-       //$inquilino=$this->cliente_model->update_tenants($id,$idcuarto[0]->room_Code);//actualizamos datos de tnt
        
-         /*$result=$this->cliente_model->existe_tnt_room($datatnt[0]->room_Code);//preguntamos si hay personas en el cuato anterior
-          if(count($result)<1){//si no hay ponemos que el cuarto esta desocupado
-            $this->Room_model->desocupar_room($datatnt[0]->room_Code);
-         }*/
-        
-        
         exit('{"result":"ok","codigo":"'.$genero.'"}');
         
         }
   
-
+public function get_person_room(){
+        $code=$this->input->post('room');
+        $result=$this->Cliente_model->get_person_room($code);
+         
+        echo json_encode($result);
+        
+        }
 public function numtoletras($xcifra)
 {
     $xarray = array(0 => "Cero",
@@ -383,7 +367,7 @@ public function print_pdf($name,$apellido,$sexo,$dni,$estado){
         /* Cabecera */
         $delta = 20;
 
-        $listado = $this->cliente_model->get_pdf($name,$apellido,$sexo,$dni,$estado);
+        $listado = $this->Cliente_model->get_pdf($name,$apellido,$sexo,$dni,$estado);
 
        
         $codigo="";

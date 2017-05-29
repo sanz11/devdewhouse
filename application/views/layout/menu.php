@@ -73,7 +73,7 @@
               }
           </style>
            <div class="logo2">
-                <img src="<?php echo base_url();?>assets/img/logotipe.png" class="igusme" >
+                <img src="<?php echo base_url();?>assets/img/menu.png" class="igusme" >
             </div>
 			<div class="logo" >
 				<a  class="simple-text">

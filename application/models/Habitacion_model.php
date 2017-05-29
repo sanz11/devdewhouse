@@ -28,6 +28,7 @@ class Habitacion_model extends CI_Model{
             $this->db->where('room_Floor',$floor);
 		if($estado!='2')
             $this->db->where('room_Occupied',$estado);
+        $this->db->where('room_State',1);
        
         $query=$this->db->get();
         
@@ -65,12 +66,39 @@ class Habitacion_model extends CI_Model{
             return $query->row();
         } 
     }
+     public function get_habitacion($roomcode){
+        $this->db->select('*');
+             $this->db->where('room_Code',$roomcode);
+        $this->db->from('caf_room');
+        
+        $query=$this->db->get();
+       if($query->num_rows()>0){
+            foreach($query->result() as $value){
+                $data[]=$value;
+            }
+            return $data;
+        } 
+    }
     public function desocupar_room($roomcode){
        
         $this->db->where('room_Code',$roomcode);
         $this->db->update('caf_room',array('room_Occupied'=>0));
          return 1;
     }
+    public function hab_libres(){
+        $this->db->select("r.*,t.tcuarto_Descripcion,concat(room_Number,',',t.tcuarto_Codigo,',',room_Price,',',room_Bath,',',room_AguaCaliente,',',room_Cable,',',room_Internet) as detalle");
+         $this->db->join('caf_tcuarto t','t.tcuarto_Codigo=r.tcuarto_Codigo','left');
+        $this->db->where('r.room_Occupied',0);
+         $this->db->where('r.room_State',1);
+        
+        $query=$this->db->get('caf_room r');
+        if($query->num_rows()>0){
+            foreach($query->result() as $value){
+                $data[]=$value;
+            }
+            return $data;
+        }
+        }
     public function limpiar_inquilino($roomcode){
         
         $this->db->where('room_Code',$roomcode);

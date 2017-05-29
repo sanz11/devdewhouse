@@ -32,10 +32,10 @@
     function editar(codes){
             limpiar();
              var codeparam = {
-                "codetenants" : codes
+                "codecliente" : codes
                 };
              url='<?php echo base_url();?>cliente/listedit_cliente';
-        alert(url);
+        //alert(codes);
             $.ajax({
                 type: "POST",
                 url: url,
@@ -52,23 +52,19 @@
                 $('#apellidop').val(data.person_LastName);
                 $('#apellidom').val(data.person_LastName2);
                 $('#telefono').val(data.person_Cellphone);
-               /* $('#telefono2').val(data.person_Cellphone2);
-                $('#direccion').val(data.person_DirectionOc);
-                $('#correo').val(data.person_Email);  
-                $('#ncuarto').val(data.room_Number); 
-                $('#nacimiento').val(data.person_BirthDate);*/
+                $('#edad').val(data.person_Edad);
                
                 
                 if(data.person_sex =='1'){
                  $('#masculino').prop('checked', true);   
                 }
-                if(data.person_sex =='0'){
+                if(data.person_sex =='2'){
                  $('#femenino').prop('checked', true);   
                 }
                 
                   $('#id').val(codes);
                   $('#titumodal').html('');
-                  $('#titumodal').append('MODIFICAR DATOS DEL INQUILINO: '+data.person_Name+'');
+                  $('#titumodal').append('MODIFICAR DATOS DE: '+data.person_Name+'');
                   $('.modal').css('display','block');
 		          $('#modal-bg').fadeIn();
                   $( "#bodys").scrollTop( 0 );
@@ -227,6 +223,73 @@
                                 </div>
                             </div>
                         </div>
+                        
+                        
+                        
+	                
+<div class="modal-bg" id="modal-bg" style="display:none">
+<div id="modal" class="modal">
+	<span  id="titumodal">REGISTRO DE INQUILINOS</span>
+   <form id="inquilino_form" method="post" action="" enctype="multipart/form-data">
+        <input type="hidden" name="id" id="id">
+        <input type="hidden" name="idperson" id="idperson">
+	    <div class="row">
+	         <div class="col-md-3">
+				 <div class="form-group ">
+					<label>DNI</label>
+					<input type="text" name="dni" id="dni">
+				 </div>
+	         </div>
+	          <div class="col-md-3">
+				 <div class="form-group ">
+					<label>Nombre</label>
+					<input type="text" name="nombre" id="nombre">
+				 </div>
+	         </div>
+	         <div class="col-md-3">
+				 <div class="form-group ">
+					<label>Apellido Paterno</label>
+					<input type="text" name="apellidop" id="apellidop">
+				 </div>
+	         </div>
+	         <div class="col-md-3">
+				 <div class="form-group ">
+					<label>Apellidos Materno</label>
+					<input type="text" name="apellidom" id="apellidom">
+				 </div>
+	         </div>
+	    </div>
+	    <div class="row">
+            <div class="col-md-3">
+				 <div class="form-group ">
+					<label>Edad</label>
+					<input type="number" name="edad" id="edad">
+				 </div>
+            </div>
+             <div class="col-md-3">
+				 <div class="form-group ">
+					<label>Telefono</label>
+					<input type="text" name="telefono" id="telefono">
+				 </div>
+            </div>
+	         <div class="col-md-6">
+				 <div class="radio2">
+                            <h4>Genero</h4>
+                            <input type="radio" name="genero" id="masculino" value="1" checked> 
+                            <label for="masculino" class="alta">Masculino</label>
+                            
+                            <input type="radio" name="genero" id="femenino" value="2">
+                            <label for="femenino" class="alta">Fenenino</label><br><br>
+                            
+                  </div>
+	         </div>
+	    </div>
+		<center><a href="javascript:save();" class="btn btn-success">Guardar</a>&nbsp;
+		<a href="<?php echo base_url();?>cliente" id="btclose" class="btn btn-info btclose">Cancelar</a></center>
+	</form>
+</div>
+</div>
+
 <script>
 $(document).ready(function(){
      $('#modal-bg').fadeOut();		

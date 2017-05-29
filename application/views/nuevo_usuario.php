@@ -1,4 +1,5 @@
-
+<link href="<?php echo base_url();?>assets/css/tenants.css" rel="stylesheet">
+<link href="<?php echo base_url();?>assets/css/habitaciones.css" rel="stylesheet">
 <script>
      $( function() {
     $( "#nacimiento" ).datepicker();
@@ -58,6 +59,7 @@
             url='<?php echo base_url();?>users/update_users';
             mensaje="Actualizado correctamente.";
         }
+        alert(url);
         $.ajax({
             type: "POST",
             url: url,
@@ -107,77 +109,6 @@
     
 });
     
-    function editar(codes){
-            limpiar();
-             var codeparam = {
-                "codeuser" : codes
-                };
-             url='<?php echo base_url();?>users/listedit_user';
-            $.ajax({
-                type: "POST",
-                url: url,
-                data: codeparam,
-                dataType: 'json',
-                async: false,
-                error: function (data) {
-                    alert('No se puedo completar la operación, por favor comunicarse con el administrador.');
-                },
-                success: function (data) {
-                $('#id').val(data.user_Code);
-                $('#idperson').val(data.person_Code);
-                $('#dni').val(data.person_Dni);
-                $('#nombre').val(data.person_Name);
-                $('#apellidop').val(data.person_LastName);
-                $('#apellidom').val(data.person_LastName2);
-                $('#password').val(data.user_Password);
-                $('#nacimiento').val(data.person_BirthDate);
-                $('#user').val(data.user_User);
-                $('#telefono').val(data.person_Cellphone);
-                $('#correo').val(data.person_Email);
-                $('#vista-previa').append(' <img src="<?php echo base_url();?>images/'+data.person_Photo+'" id="foto">');
-               
-                
-                if(data.person_sex =='1'){
-                 $('#masculino').prop('checked', true);   
-                }
-                if(data.person_sex =='0'){
-                 $('#femenino').prop('checked', true);   
-                }
-                
-                  $('#id').val(codes);
-                  $('#titumodal').html('');
-                  $('#titumodal').append('MODIFICAR DATOS DEL ADMINISTRADOR: '+data.person_Name+'');
-                  $('.modal').css('display','block');
-		          $('#modal-bg').fadeIn();
-                  $( "#bodys").scrollTop( 0 );
-                }
-            });
-    
-        
-    }
-    function delet(code){
-         eliminar=confirm("¿Deseas eliminar este registro?");
-        if (eliminar){
-             var codeparam = {
-                 "code" : code
-                };
-             url='<?php echo base_url();?>users/delete_users';
-            $.ajax({
-                type: "POST",
-                url: url,
-                data: codeparam,
-                dataType: 'json',
-                async: false,
-                error: function (data) {
-                    alert('No se puedo completar la operación, por favor comunicarse con el administrador.');
-                },
-                success: function (data) {
-                   alert('Eliminado correctamente.');
-                    window.location.href = "<?php echo base_url()?>users";
-                }
-            });
-        }
-    }
      function limpiar(){
         $('#id').val('');
         $('#dni').val('');
@@ -194,9 +125,13 @@
 
 </script>
 
-<div class="modal-bg" id='modal'>
-<div id="moda" class="moda">
-	<span  id="titumodal">REGISTRO DE ADMINISTRADORES</span>
+<div class="row col-md-1"></div>
+<div class="row col-md-10">
+            <div class="card">
+                <div class="card-header" data-background-color="green">
+                     <h4 class="title">Registro de Usuario</h4>
+                 </div>
+                <div class="card-content">
    
     <form id="user_form" method="post" action="" enctype="multipart/form-data">
         <input type="hidden" name="id" id="id">
@@ -287,4 +222,11 @@
 	</form>
 </div>
 </div>
+
+<div class="clearfix"></div>
+               </div>
+             </div>
+  </div>
+                           
+	        
 <script src="<?php echo base_url();?>assets/js/upload.js"></script>

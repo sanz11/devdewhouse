@@ -1,5 +1,6 @@
 <?php 
-include("application/libraries/cezpdf.php");
+
+include("application/libraries/class.ezpdf.php");
 include("application/libraries/class.backgroundpdf.php");
 class Habitacion extends CI_Controller{
     function __construct(){
@@ -22,7 +23,7 @@ class Habitacion extends CI_Controller{
         $data['list']=$list;
         $data['number']="";
         $data['floor']="";
-		$data['estado']=form_dropdown('estado',array('1'=> 'Ocupado','0'=> 'Disponible','2'=> 'Todos'), '2','id="estado"');//name opciones,selccionado ,attr
+		$data['estado']=form_dropdown('estado',array('1'=> 'Ocupado','0'=> 'Disponible','2'=> 'Todos'), '2','id="estado" class="form-control"');//name opciones,selccionado ,attr
         
         $tipocuarto = $this->Habitacion_model->listar_tipocuarto();
         $options = array('0'=> 'selecciona');
@@ -73,9 +74,9 @@ class Habitacion extends CI_Controller{
         $data['user']=$userlist->person_Name.' '.$userlist->person_LastName;
         $data['imagen']=$userlist->person_Photo;
         //FIN datos para el menu
-         $number=$this->input->post('number');
-         $floor=$this->input->post('floor');
-          $state=$this->input->post('estado');
+         $number=$this->input->post('numberb');
+         $floor=$this->input->post('pisob');
+         $state=$this->input->post('estado');
          
          $result=$this->Habitacion_model->search($number,$floor,$state);
          
@@ -119,10 +120,10 @@ class Habitacion extends CI_Controller{
         
         $result=$this->Habitacion_model->add_habitacion($filter);
         
+        
         exit('{"result":"ok","codigo":"'.$result.'"}');
-        
-        
     }
+   
     public function edit_habitacion(){
          $id =$this->input->post('id');
          $banio =$this->input->post('banio');
@@ -171,13 +172,6 @@ class Habitacion extends CI_Controller{
          
          echo json_encode($result);
     }
-    public function desocupar_habitacion(){
-        $coderoom =$this->input->post('coderoom');
-        
-        $this->Habitacion_model->desocupar_room($coderoom);
-        $result=$this->Habitacion_model->limpiar_inquilino($coderoom);
-        exit('{"result":"ok","codigo":"'.$result.'"}');
-    }
     public function print_pdf($numberb,$floorb,$stateb)
     {
         $this->cezpdf = new cezpdf('a4','portrait');
@@ -195,8 +189,7 @@ class Habitacion extends CI_Controller{
                 'col2' => $value->room_Number,
                 'col3' => $value->room_Floor,
                 'col4' => $value->room_Size.'m',
-                'col5' => 'S/.'.number_format($value->room_Price,2),
-                'col6' => $value->room_Description
+                'col5' => 'S/.'.number_format($value->room_Price,2)
             );
         }
           $db_data[] = array(
@@ -204,17 +197,15 @@ class Habitacion extends CI_Controller{
                 'col2' => '',
                 'col3' => '',
                 'col4' => 'Total',
-                'col5' => 'S/.'.number_format($suma,2),
-                'col6' => ''
+                'col5' => 'S/.'.number_format($suma,2)
             );
           
         $col_names = array(
             'col1' => '<b>Itm</b>',
             'col2' => '<b>N'.utf8_decode('°').' DE CUARTO</b>',
-            'col3' => '<b>PLANTA</b>',
+            'col3' => '<b>PISO</b>',
             'col4' => '<b>'.utf8_decode('TAMAÑO').'</b>',
-            'col5' => '<b>PRECIO</b>',
-            'col6' => '<b>DESCRIPCION</b>'
+            'col5' => '<b>PRECIO</b>'
         );
     
     $this->cezpdf->ezText('', '', array("leading" => 5));
@@ -249,8 +240,7 @@ class Habitacion extends CI_Controller{
                 'col3' => array('width' => 45, 'justification' => 'center'),
                 'col4' => array('width' => 45, 'justification' => 'center'),
                 'col5' => array('width' => 60, 'justification' => 'center'),
-                'col6' => array('width' => 170, 'justification' => 'center'),
-                'col7' => array('width' => 35, 'justification' => 'center')
+                'col6' => array('width' => 170, 'justification' => 'center')
             )
         ));
       

@@ -2,10 +2,10 @@
 class cliente_model extends CI_Model{
     
     public function get_list(){
-        $this->db->select('p.*,t.*,');
+        $this->db->select('p.*,t.*');
         $this->db->from('caf_tenant t');
         $this->db->join('caf_person p','p.person_Code=t.person_Code');
-        $this->db->where('tnt_State',1);
+        $this->db->where('tnt_State =',2);
         $query=$this->db->get();
         
         if($query->num_rows()>0){
@@ -16,7 +16,7 @@ class cliente_model extends CI_Model{
         }
     }
     public function search($name,$apellido,$sexo,$dni,$estado){
-        $this->db->select('p.*,t.*,');
+        $this->db->select('p.*,t.*');
         $this->db->from('caf_tenant t');
         $this->db->join('caf_person p','p.person_Code=t.person_Code');
        // $this->db->join('caf_room r','r.room_Code=t.room_Code');
@@ -32,8 +32,8 @@ class cliente_model extends CI_Model{
             $this->db->where('person_sex',$sexo);
         if($dni!='')
             $this->db->where('person_Dni',$dni);
-        if($estado!=2)
-             $this->db->where('tnt_State',$estado);
+        
+        $this->db->where('tnt_State',$estado);
         
         $query=$this->db->get();
         
@@ -44,6 +44,34 @@ class cliente_model extends CI_Model{
             return $data;
         } 
         
+    }
+    public function get_cliente($clienteid){
+        $this->db->select('p.*,t.*');
+        $this->db->from('caf_tenant t');
+        $this->db->join('caf_person p','p.person_Code=t.person_Code');
+        $this->db->where('tnt_Code',$clienteid);
+        $this->db->where('tnt_State !=',0);
+        
+        $query=$this->db->get();
+        
+       if($query->num_rows()>0){
+            foreach($query->result() as $value){
+                $data[]=$value;
+            }
+            return $data;
+        } 
+        
+    }
+    public function cliente_autocomplete($name){
+          $this->db->select('p.*,t.*')
+                ->from('caf_tenant t')
+                ->join('caf_person p', 'p.person_Code = t.person_Code')
+               ->where('tnt_State !=',0)
+                ->like('p.person_Name ',$name );
+           $query=$this->db->get();     
+        if($query->num_rows() > 0){
+            return $query->result();
+        }
     }
     public function add_person($filter){
         $this->db->insert('caf_person',(array)$filter);
@@ -69,38 +97,17 @@ class cliente_model extends CI_Model{
          $data = array(
             'tnt_Code' => '',
             'person_Code' => $idperson ,
-            //'room_Code' => $idcuarto,
             'tnt_State'=> 1,
             'tnt_RegistrationDate' => date('Y-m-d H:i:s')
          );
         $this->db->insert('caf_tenant',$data);
     return $this->db->insert_id();
     }
-    public function ocupied_room($idcuarto){
-         $this->db->where('room_Code',$idcuarto);  
-        $this->db->update('caf_room',array('room_Occupied' => '1'));
-                    
-    }
-    public function get_person_room($cuarto){
-        $this->db->select('p.*,t.*');
-        $this->db->from('caf_tenant t');
-        $this->db->join('caf_person p','p.person_Code=t.person_Code');
-        $this->db->join('caf_room r','r.room_Code=t.room_Code');
-        $this->db->where('tnt_State',1);
-       
-        if($cuarto!='')
-             $this->db->where('r.room_Code',$cuarto);
-        
-        
-        $query=$this->db->get();
-        
-       if($query->num_rows()>0){
-            foreach($query->result() as $value){
-                $data[]=$value;
-            }
-            return $data;
-        } 
-    }
+   public function cliente_activar($code,$estado){
+        $this->db->where('tnt_Code',$code);
+        $this->db->update('caf_tenant',array('tnt_State'=>$estado));
+        return 1;
+       }
     
     public function delete_tenants($code){
         $this->db->where('tnt_Code',$code);

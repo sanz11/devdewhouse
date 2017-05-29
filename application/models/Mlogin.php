@@ -6,8 +6,9 @@ class Mlogin extends CI_Model{
     $this->db->select('u.user_Code,p.person_Name,p.person_LastName');
     $this->db->from('caf_user u');
     $this->db->join('caf_person p','p.person_Code = u.person_Code');
-    $this->db->where('u.user_User',$user);
-    $this->db->where('u.user_Password',$pass);//consulta
+    $this->db->where("((u.user_User='$user' AND u.user_Password='$pass') OR (p.person_Email='$user' AND u.user_Password='$pass'))", NULL, FALSE);
+    //$this->db->where('u.user_User',$user);
+    //$this->db->where('u.user_Password',$pass);//consulta
 
         $resultado =$this->db->get();
         

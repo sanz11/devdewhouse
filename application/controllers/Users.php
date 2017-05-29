@@ -48,8 +48,6 @@ class Users extends CI_Controller{
         $userlist=$this->Users_model->edit($usercode);//metodo llamar datos por codigo
         $data['user']=$userlist->person_Name.' '.$userlist->person_LastName;
         $data['imagen']=$userlist->person_Photo;
-        $roomscobros=$this->Room_model->get_cobros('0');
-        $data['npay']=count($roomscobros);
         //FIN datos para el menu
          $name=$this->input->post('name');
          $user=$this->input->post('user');
@@ -99,9 +97,7 @@ class Users extends CI_Controller{
         $filter->person_Dni=$dni;
         $filter->person_sex=$genero;
         $filter->person_Cellphone=$telefono;
-        $filter->person_Cellphone2='';
         $filter->person_Email=$correo;
-        $filter->person_DirectionOc='';
         $filter->person_Photo=$fotoname;
         $filter->person_State=1;
         

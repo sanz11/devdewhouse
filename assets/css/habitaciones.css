@@ -23,10 +23,11 @@
         }
 /*fin tabla*/
 input:focus,textarea:focus ,select:focus{ 
-    border: 1px solid cornflowerblue;
+    border: 1px solid cornflowerblue !important;
 }
 input:focus { 
-    height:30px; 
+    height:30px;
+    /*width: 40%;*/
 }
 textarea{
         width: 95%;

@@ -1,6 +1,6 @@
   <div class="main-panel" id="bodys">
   <style>
-      .active{
+     .navbar .active{
           background:  #333;
           color: white;
       }
@@ -27,7 +27,7 @@
 	                    </a>
 	                </li>
         <li <?php if($active=="alquiler"){ echo " class='active'";}?>>
-	                    <a href="<?php echo base_url()."cobros";?>">
+	                    <a href="<?php echo base_url()."Alquiler";?>">
 	                        <i class="material-icons">attach_money</i>
 	                        <p>Alquiler</p>
 	                    </a>
@@ -54,7 +54,7 @@
 	                    </a>
 	                </li>
 	   <li <?php if($active=="reporte"){ echo " class='active'";}?>>
-	                    <a href="<?php echo base_url()."users";?>">
+	                    <a href="<?php echo base_url()."reporte";?>">
 	                        <i class="material-icons">flip_to_front</i>
 	                        <p>Reporte</p>
 	                    </a>

@@ -141,7 +141,7 @@
                 if(data.person_sex =='1'){
                  $('#masculino').prop('checked', true);   
                 }
-                if(data.person_sex =='0'){
+                if(data.person_sex =='2'){
                  $('#femenino').prop('checked', true);   
                 }
                 
@@ -195,7 +195,7 @@
 
 </script>
                          <div class="row">
-                            <div class="col-md-8">
+                            <div class="col-md-12">
                                 <div class="card">
                                     <div class="card-header" data-background-color="green">
                                         <h4 class="title">Buscar Administrador</h4>
@@ -230,18 +230,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-4">
-                                <div class="card card-profile">
-                                    <div class="content">
-                                        <!--<h6 class="category text-gray">Información</h6>-->
-                                        <h4 class="card-title">Información</h4>
-                                        <p class="card-content">
-                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatum fuga, ipsa aperiam a dolorem optio error necessitatibus 
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                           
                         </div>
 
                    <!--tabla-->
